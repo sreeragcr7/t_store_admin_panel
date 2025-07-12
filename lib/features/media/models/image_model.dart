@@ -82,14 +82,15 @@ class ImageModel {
   }
 
   //Map Firebase storage data
-  factory ImageModel.fromSupabaseUpload({required String url,
-  required String folder,
-  required String filename,
-  required int sizeBytes,
-  required String fullPath,
-  String? contentType,
-  DateTime? createdAt,
-   DateTime? updatedAt,
+  factory ImageModel.fromSupabaseUpload({
+    required String url,
+    required String folder,
+    required String filename,
+    required int sizeBytes,
+    required String fullPath,
+    String? contentType,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return ImageModel(
       url: url,

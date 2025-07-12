@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:t_store_admin_panel/data/repositories/media/media_repository.dart';
 import 'package:t_store_admin_panel/features/media/models/image_model.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
@@ -15,6 +16,11 @@ import 'package:t_store_admin_panel/utils/popups/loaders.dart';
 
 class MediaController extends GetxController {
   static MediaController get instance => Get.find();
+
+  final RxBool loading = false.obs;
+
+  final int initialLoadCount = 20;
+  final int loadMoreCount = 25;
 
   late DropzoneViewController dropzoneController;
   final RxBool showImagesUploaderSection = false.obs;
@@ -29,6 +35,68 @@ class MediaController extends GetxController {
   final RxList<ImageModel> allUserImages = <ImageModel>[].obs;
 
   final MediaRepository mediaRepository = MediaRepository();
+
+  ///Get Images
+  void getMediaImages() async {
+    try {
+      loading.value = true;
+
+      RxList<ImageModel> targetList = <ImageModel>[].obs;
+
+      if (selectedPath.value == MediaCategory.banners && allBannerImages.isEmpty) {
+        targetList = allBannerImages;
+      } else if (selectedPath.value == MediaCategory.brands && allBrandImages.isEmpty) {
+        targetList = allBrandImages;
+      } else if (selectedPath.value == MediaCategory.categories && allCategoryImages.isEmpty) {
+        targetList = allCategoryImages;
+      } else if (selectedPath.value == MediaCategory.products && allProductImages.isEmpty) {
+        targetList = allProductImages;
+      } else if (selectedPath.value == MediaCategory.users && allUserImages.isEmpty) {
+        targetList = allUserImages;
+      }
+
+      final images = await mediaRepository.fetchImagesFromDatabase(selectedPath.value, initialLoadCount);
+      targetList.assignAll(images);
+
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: 'Unable to fetch Images, Something went wrong. Try again');
+    }
+  }
+
+  ///Load more Images
+  void loadMoreMediaImages() async {
+    try {
+      loading.value = true;
+
+      RxList<ImageModel> targetList = <ImageModel>[].obs;
+
+      if (selectedPath.value == MediaCategory.banners) {
+        targetList = allBannerImages;
+      } else if (selectedPath.value == MediaCategory.brands) {
+        targetList = allBrandImages;
+      } else if (selectedPath.value == MediaCategory.categories) {
+        targetList = allCategoryImages;
+      } else if (selectedPath.value == MediaCategory.products) {
+        targetList = allProductImages;
+      } else if (selectedPath.value == MediaCategory.users) {
+        targetList = allUserImages;
+      }
+
+      final images = await mediaRepository.loadMoreImagesFromDatabase(
+        selectedPath.value,
+        initialLoadCount,
+        targetList.last.createdAt ?? DateTime.now(),
+      );
+      targetList.addAll(images);
+
+      loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(title: 'Oh Snap!', message: 'Unable to fetch Images, Something went wrong. Try again');
+    }
+  }
 
   /// Select Local Images on Button Press
   Future<void> selectLocalImages() async {
@@ -157,7 +225,7 @@ class MediaController extends GetxController {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(TImages.uploadingGif, height: 300, width: 300),
+                  Lottie.asset(TImages.uploading, height: 300, width: 300, fit: BoxFit.contain),
                   const SizedBox(height: TSizes.spaceBtwItems),
                   const Text('Sit Tight, Your images are uploading...'),
                 ],

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:t_store_admin_panel/features/media/models/image_model.dart';
+import 'package:t_store_admin_panel/utils/constants/enums.dart';
 
 class MediaRepository extends GetxController {
   static MediaRepository get instance => Get.find();
@@ -61,6 +62,53 @@ class MediaRepository extends GetxController {
     try {
       final data = await FirebaseFirestore.instance.collection('Images').add(image.toJson());
       return data.id;
+    } on SocketException catch (e) {
+      throw e.message;
+    } on PlatformException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  //Fetch images from Firestore based on media category & load count
+  Future<List<ImageModel>> fetchImagesFromDatabase(MediaCategory mediaCategory, int loadCount) async {
+    try {
+      final querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('Images')
+              .where('mediaCategory', isEqualTo: mediaCategory.name.toString())
+              .orderBy('createdAt', descending: true)
+              .limit(loadCount)
+              .get();
+
+      return querySnapshot.docs.map((e) => ImageModel.fromSnapShot(e)).toList();
+    } on SocketException catch (e) {
+      throw e.message;
+    } on PlatformException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  //Load more images from firestore based on media category, load count & last fetched data.
+  Future<List<ImageModel>> loadMoreImagesFromDatabase(
+    MediaCategory mediaCategory,
+    int loadCount,
+    DateTime lastFetchedData,
+  ) async {
+    try {
+      final querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('Images')
+              .where('mediaCategory', isEqualTo: mediaCategory.name.toString())
+              .orderBy('createdAt', descending: true)
+              .startAfter([lastFetchedData])
+              .limit(loadCount)
+              .get();
+
+      return querySnapshot.docs.map((e) => ImageModel.fromSnapShot(e)).toList();
     } on SocketException catch (e) {
       throw e.message;
     } on PlatformException catch (e) {

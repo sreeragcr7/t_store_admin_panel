@@ -25,7 +25,11 @@ class TImages {
   static const String emailDelivered = 'assets/images/animations/emailDelivered.json';
   static const String emailLoading = 'assets/images/animations/emailLoading.json';
   static const String successScreen = 'assets/images/animations/successScreen.json';
-  static const String uploadingGif = 'assets/images/animations/uploading.gif';
+  static const String emptyFolder = 'assets/images/animations/emptyfolder.json';
+  static const String boxOpen = 'assets/images/animations/boxopen.json';
+  static const String uploading = 'assets/images/animations/uploading.json';
+
+  // -- Gif
 
   // --- Category Icon
   static const String sportIcon = 'assets/icons/categories/sports.png';

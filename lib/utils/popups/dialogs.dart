@@ -15,7 +15,7 @@ class TDialogs {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text(content),
           actions: <Widget>[
             TextButton(onPressed: onCancle ?? () => Navigator.of(context).pop(), child: Text(cancelText)),
