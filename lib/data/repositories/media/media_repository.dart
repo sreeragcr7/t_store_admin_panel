@@ -117,4 +117,22 @@ class MediaRepository extends GetxController {
       throw e.toString();
     }
   }
+
+  //Delete file from Supabase Storage and corresponding documnet from supabase
+  Future<void> deleteFileFromStorage(ImageModel image) async {
+    try {
+      //Delete the image file from Supabase Storage
+      final bucket = Supabase.instance.client.storage.from('profile');
+      await bucket.remove([image.fullPath ?? '']);
+
+      //Delete the image metadata from Firestore
+      await FirebaseFirestore.instance.collection('Images').doc(image.id).delete();
+    } on SocketException catch (e) {
+      throw e.message;
+    } on PlatformException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      throw 'Something went wrong while deleting image';
+    }
+  }
 }

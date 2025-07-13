@@ -4,6 +4,7 @@ import 'package:get/utils.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
 import 'package:t_store_admin_panel/common/widgets/images/t_rounded_image.dart';
+import 'package:t_store_admin_panel/features/media/controllers/media_controller.dart';
 import 'package:t_store_admin_panel/features/media/models/image_model.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
@@ -92,6 +93,9 @@ class ImagePopup extends StatelessWidget {
                       onPressed: () {
                         FlutterClipboard.copy(image.url).then((value) => TLoaders.customToast(message: 'URL Copied!'));
                       },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: TColors.darkGrey), // removes outline
+                      ),
                       child: const Icon(Iconsax.copy),
                     ),
                   ),
@@ -107,7 +111,7 @@ class ImagePopup extends StatelessWidget {
                   SizedBox(
                     width: 300,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () => MediaController.instance.removeCloudImageConfirmation(image),
                       child: const Text(
                         'Delete Image',
                         style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
