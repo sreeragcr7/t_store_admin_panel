@@ -15,11 +15,24 @@ import 'package:t_store_admin_panel/utils/constants/size.dart';
 import 'package:t_store_admin_panel/utils/popups/loader_animation.dart';
 
 class MediaContent extends StatelessWidget {
-  const MediaContent({super.key});
+  MediaContent({
+    super.key,
+    required this.allowSelection,
+    required this.allowMultipleSelection,
+    this.alreadySelectedUrls,
+    this.onImagesSelected,
+  });
+
+  final bool allowSelection;
+  final bool allowMultipleSelection;
+  final List<String>? alreadySelectedUrls;
+  final List<ImageModel> selectedImages = [];
+  final Function(List<ImageModel> selectedImages)? onImagesSelected;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MediaController());
+    bool loadedPreviousSelection = false;
+    final controller = MediaController.instance;
     return TRoundedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,16 +40,21 @@ class MediaContent extends StatelessWidget {
           //Media images header
           Row(
             children: [
-              Text('Select Folder', style: Theme.of(context).textTheme.headlineSmall),
-              const SizedBox(width: TSizes.spaceBtwItems),
-              MediaFolderDropdown(
-                onChanged: (MediaCategory? newValue) {
-                  if (newValue != null) {
-                    controller.selectedPath.value = newValue;
-                    controller.getMediaImages();
-                  }
-                },
+              Row(
+                children: [
+                  Text('Select Folder', style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(width: TSizes.spaceBtwItems),
+                  MediaFolderDropdown(
+                    onChanged: (MediaCategory? newValue) {
+                      if (newValue != null) {
+                        controller.selectedPath.value = newValue;
+                        controller.getMediaImages();
+                      }
+                    },
+                  ),
+                ],
               ),
+              if (allowSelection) buildAddSelectedImagesButton(),
             ],
           ),
           SizedBox(height: TSizes.spaceBtwSections),
@@ -46,8 +64,30 @@ class MediaContent extends StatelessWidget {
             //Get selected Folder images
             List<ImageModel> images = _getSelectedFolderImages(controller);
 
+            //Load selected images from Alredy selected images only once otherwise
+            //on Obx() rebuild UI first images will be selected then will auto uncheck.
+            if (!loadedPreviousSelection) {
+              if (alreadySelectedUrls != null && alreadySelectedUrls!.isNotEmpty) {
+                //Convert alreadySelectedUrls to a Set for faster lookup
+                final selectedUrlsSet = Set<String>.from(alreadySelectedUrls!);
+
+                for (var image in images) {
+                  image.isSeleceted.value = selectedUrlsSet.contains(image.url);
+                  if (image.isSeleceted.value) {
+                    selectedImages.add(image);
+                  }
+                }
+              } else {
+                //If alreadySelectedUrls is null or empty , set all images to not selected.
+                for (var image in images) {
+                  image.isSeleceted.value = false;
+                }
+              }
+              loadedPreviousSelection = true;
+            }
+
             //Loader
-            if (controller.loading.value && images.isEmpty) return TLoaderAnimation();
+            if (controller.loading.value && images.isEmpty) return const TLoaderAnimation();
 
             //Empty widget
             if (images.isEmpty) return _buildEmptyAnimationWidget(context);
@@ -69,7 +109,7 @@ class MediaContent extends StatelessWidget {
                                 height: 180,
                                 child: Column(
                                   children: [
-                                    _buildSimpleList(image),
+                                    allowSelection ? _buildListWithCheckbox(image) : _buildSimpleList(image),
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: TSizes.sm),
@@ -139,7 +179,7 @@ class MediaContent extends StatelessWidget {
     );
   }
 
-  _buildSimpleList(ImageModel image) {
+  Widget _buildSimpleList(ImageModel image) {
     return TRoundedImage(
       width: 140,
       height: 140,
@@ -148,6 +188,77 @@ class MediaContent extends StatelessWidget {
       imageType: ImageType.network,
       margin: TSizes.spaceBtwItems / 2,
       backgroundColor: TColors.primaryBackground,
+    );
+  }
+
+  Widget _buildListWithCheckbox(ImageModel image) {
+    return Stack(
+      children: [
+        TRoundedImage(
+          width: 140,
+          height: 140,
+          padding: TSizes.sm,
+          image: image.url,
+          imageType: ImageType.network,
+          margin: TSizes.spaceBtwItems / 2,
+          backgroundColor: TColors.primaryBackground,
+        ),
+        Positioned(
+          top: TSizes.md,
+          right: TSizes.md,
+          child: Obx(
+            () => Checkbox(
+              value: image.isSeleceted.value,
+              onChanged: (selected) {
+                if (selected != null) {
+                  image.isSeleceted.value = selected;
+
+                  if (selected) {
+                    if (!allowMultipleSelection) {
+                      //If multiple selection is not allowed, uncheck other checkboxes
+                      for (var otherImage in selectedImages) {
+                        if (otherImage != image) {
+                          otherImage.isSeleceted.value = false;
+                        }
+                      }
+                      selectedImages.clear();
+                    }
+                    selectedImages.add(image);
+                  } else {
+                    selectedImages.remove(image);
+                  }
+                }
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildAddSelectedImagesButton() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        //Close button
+        SizedBox(
+          width: 120,
+          child: OutlinedButton.icon(
+            label: const Text('Close'),
+            icon: const Icon(Iconsax.close_circle),
+            onPressed: () => Get.back(),
+          ),
+        ),
+        const SizedBox(width: TSizes.spaceBtwItems),
+        SizedBox(
+          width: 120,
+          child: ElevatedButton.icon(
+            label: const Text('Add'),
+            icon: const Icon(Iconsax.image),
+            onPressed: () => Get.back(result: selectedImages),
+          ),
+        ),
+      ],
     );
   }
 }

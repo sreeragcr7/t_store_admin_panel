@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:t_store_admin_panel/data/repositories/media/media_repository.dart';
 import 'package:t_store_admin_panel/features/media/models/image_model.dart';
+import 'package:t_store_admin_panel/features/media/screens/media/widgets/media_content.dart';
+import 'package:t_store_admin_panel/features/media/screens/media/widgets/media_uploader.dart';
+import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
@@ -28,7 +31,6 @@ class MediaController extends GetxController {
   final Rx<MediaCategory> selectedPath = MediaCategory.folders.obs;
   final RxList<ImageModel> selectedImagesToUpload = <ImageModel>[].obs;
 
-  final RxList<ImageModel> allImages = <ImageModel>[].obs;
   final RxList<ImageModel> allBannerImages = <ImageModel>[].obs;
   final RxList<ImageModel> allProductImages = <ImageModel>[].obs;
   final RxList<ImageModel> allBrandImages = <ImageModel>[].obs;
@@ -124,6 +126,7 @@ class MediaController extends GetxController {
     }
   }
 
+  ///Popup confirmation to upload Images
   void uploadImageConfirmation() {
     if (selectedPath.value == MediaCategory.folders) {
       TLoaders.warningSnackBar(
@@ -142,6 +145,7 @@ class MediaController extends GetxController {
     );
   }
 
+  ///Upload images
   Future<void> uploadImages() async {
     try {
       //Remove confirmation box
@@ -214,6 +218,7 @@ class MediaController extends GetxController {
     }
   }
 
+  ///Loader to upload Images
   void uploadImagesLoader() {
     showDialog(
       context: Get.context!,
@@ -236,6 +241,7 @@ class MediaController extends GetxController {
     );
   }
 
+  ///Get storage path
   String getSelectedPath() {
     String path = '';
     switch (selectedPath.value) {
@@ -275,6 +281,7 @@ class MediaController extends GetxController {
     );
   }
 
+  ///Remove cloud image
   void removeCloudImage(ImageModel image) async {
     try {
       //Close the removeCloudImageConfirmation() TDialog
@@ -325,5 +332,39 @@ class MediaController extends GetxController {
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
+  }
+
+  //Images Selection bottom sheet
+  Future<List<ImageModel>?> selectedImagesFromMedia({
+    List<String>? selectedUrls,
+    bool allowSelection = true,
+    bool multipleSelection = false,
+  }) async {
+    showImagesUploaderSection.value = true;
+
+    List<ImageModel>? selectedImages = await Get.bottomSheet<List<ImageModel>>(
+      isScrollControlled: true,
+      backgroundColor: TColors.primaryBackground,
+      FractionallySizedBox(
+        heightFactor: 1,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(TSizes.defaultSpace),
+            child: Column(
+              children: [
+                const MediaUploader(),
+                MediaContent(
+                  allowSelection: allowSelection,
+                  alreadySelectedUrls: selectedUrls ?? [],
+                  allowMultipleSelection: multipleSelection,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return selectedImages;
   }
 }
