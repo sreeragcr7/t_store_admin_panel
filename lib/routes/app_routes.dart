@@ -3,6 +3,9 @@ import 'package:t_store_admin_panel/features/authentication/screens/forget_passw
 import 'package:t_store_admin_panel/features/authentication/screens/login/login.dart';
 import 'package:t_store_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:t_store_admin_panel/features/media/screens/media.dart';
+import 'package:t_store_admin_panel/features/shop/screens/category/all_categories/categories.dart';
+import 'package:t_store_admin_panel/features/shop/screens/category/create_category/create_category.dart';
+import 'package:t_store_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/dashboard.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/routes/routes_middleware.dart';
@@ -34,9 +37,9 @@ class TAppRoutes {
     // GetPage(name: TRoutes.editProduct, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
 
     // //Categories
-    // GetPage(name: TRoutes.categories, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.createCategory, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.editCategory, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
+    GetPage(name: TRoutes.categories, page: () => const CategoriesScreen(), middlewares: [TRouteMiddleware()]),
+    GetPage(name: TRoutes.createCategory, page: () => const CreateCategoryScreen(), middlewares: [TRouteMiddleware()]),
+    GetPage(name: TRoutes.editCategory, page: () => const EditCategoryScreen(), middlewares: [TRouteMiddleware()]),
 
     // //Brands
     // GetPage(name: TRoutes.brands, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),

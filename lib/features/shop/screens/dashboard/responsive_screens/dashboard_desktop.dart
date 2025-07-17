@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/utils.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
-import 'package:t_store_admin_panel/features/shop/controllers/product/product_images_controller.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/tables/data_table.dart';
 
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/widgets/dashboard_card.dart';
@@ -16,7 +13,6 @@ class DashboardDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProductImagesController());
     return Scaffold(
       backgroundColor: TColors.softGrey,
       body: SingleChildScrollView(
@@ -27,12 +23,6 @@ class DashboardDesktopScreen extends StatelessWidget {
             children: [
               //Heading
               Text('Dashboard', style: Theme.of(context).textTheme.headlineMedium),
-              ElevatedButton(onPressed: () => controller.selectedThumbnailImage(), child: Text('Select single image')),
-              const SizedBox(height: TSizes.spaceBtwSections / 2),
-              ElevatedButton(
-                onPressed: () => controller.selectMultipleProductImages(),
-                child: Text('Select multiple images'),
-              ),
               const SizedBox(height: TSizes.spaceBtwSections / 2),
 
               //Cards

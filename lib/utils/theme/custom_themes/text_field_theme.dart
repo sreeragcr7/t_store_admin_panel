@@ -8,7 +8,7 @@ class TTextFieldTheme {
     errorMaxLines: 3,
     prefixIconColor: Colors.grey,
     suffixIconColor: Colors.grey,
-    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12), //! manual added
+    // contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12), //! manual added
     // constraints: const BoxConstraints.expand(height: 14.inputFieldHeight),
     labelStyle: const TextStyle().copyWith(fontSize: 14, color: Colors.black),
     hintStyle: const TextStyle().copyWith(fontSize: 11, color: Colors.black),
@@ -41,7 +41,7 @@ class TTextFieldTheme {
     errorMaxLines: 2,
     prefixIconColor: Colors.grey,
     suffixIconColor: Colors.grey,
-    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12), //! manual added
+    // contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12), //! manual added
     // constraints: const BoxConstraints.expand(height: 14.inputFieldHeight),
     labelStyle: const TextStyle().copyWith(fontSize: 14, color: Colors.white),
     hintStyle: const TextStyle().copyWith(fontSize: 11, color: Colors.white),

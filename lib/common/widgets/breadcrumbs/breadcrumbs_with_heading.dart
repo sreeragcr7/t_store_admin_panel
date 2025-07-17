@@ -9,8 +9,8 @@ class TBreadcrumbsWithHeading extends StatelessWidget {
   const TBreadcrumbsWithHeading({
     super.key,
     required this.heading,
-    this.returnToPreviousScreen = false,
     required this.breadscrumbItems,
+    this.returnToPreviousScreen = false,
   });
 
   //Heading of the page

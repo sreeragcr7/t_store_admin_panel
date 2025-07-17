@@ -34,5 +34,5 @@ class TRoutes {
   static const createOrder = '/createOrder';
   static const editOrder = '/editOrder';
 
-  static List sideMenuItems = [dashboard, login, resetPassword, forgetPassword];
+  static List sideBarMenuItems = [dashboard, media, categories];
 }

@@ -10,7 +10,7 @@ class TRouteObservers extends GetObserver {
 
     if (previousRoute != null) {
       //Check the route name & update the active item in the sidebar accordingly
-      for (var routeName in TRoutes.sideMenuItems) {
+      for (var routeName in TRoutes.sideBarMenuItems) {
         if (previousRoute.settings.name == routeName) {
           sidebarController.activeItem.value = routeName;
         }
@@ -24,7 +24,7 @@ class TRouteObservers extends GetObserver {
 
     if (route != null) {
       //Check the route name & update the active item in the sidebar accordingly
-      for (var routeName in TRoutes.sideMenuItems) {
+      for (var routeName in TRoutes.sideBarMenuItems) {
         if (route.settings.name == routeName) {
           sidebarController.activeItem.value = routeName;
         }
