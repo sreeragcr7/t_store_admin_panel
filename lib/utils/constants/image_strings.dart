@@ -47,6 +47,17 @@ class TImages {
   static const String banner2 = 'assets/images/banners/banner2.JPG';
   static const String banner3 = 'assets/images/banners/banner3.JPG';
 
+  // --- Brands
+  static const String nikeBrand = 'assets/icons/brands/nike_brand.png';
+  static const String adidasBrand = 'assets/icons/brands/adidas_brand.png';
+  static const String acerBrand = 'assets/icons/brands/acer_brand.png';
+  static const String jordanBrand = 'assets/icons/brands/jordan_brand.png';
+  static const String pumaBrand = 'assets/icons/brands/puma_brand.png';
+  static const String appleBrand = 'assets/icons/brands/apple_brand.png';
+  static const String zaraBrand = 'assets/icons/brands/zara_brand.png';
+  static const String samsungBrand = 'assets/icons/brands/samsung_brand.png';
+  static const String kenwoodBrand = 'assets/icons/brands/kenwood_brand.png';
+
   // --- Payment Methods
   static const String applepay = 'assets/icons/payment_methods/applepay.png';
   static const String creditcard = 'assets/icons/payment_methods/creditcard.png';

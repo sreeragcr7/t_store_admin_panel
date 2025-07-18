@@ -10,9 +10,9 @@ class TRoutes {
   static const dashboard = '/dashboard';
   static const media = '/media';
 
-  static const banners = '/banners';
-  static const createBanner = '/createBanner';
-  static const editBanner = '/editBanner';
+  // static const banners = '/banners';
+  // static const createBanner = '/createBanner';
+  // static const editBanner = '/editBanner';
 
   static const products = '/products';
   static const createProduct = '/createProduct';
@@ -34,5 +34,5 @@ class TRoutes {
   static const createOrder = '/createOrder';
   static const editOrder = '/editOrder';
 
-  static List sideBarMenuItems = [dashboard, media, categories];
+  static List sideBarMenuItems = [dashboard, media, categories, brands];
 }

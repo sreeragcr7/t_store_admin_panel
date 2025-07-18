@@ -3,6 +3,9 @@ import 'package:t_store_admin_panel/features/authentication/screens/forget_passw
 import 'package:t_store_admin_panel/features/authentication/screens/login/login.dart';
 import 'package:t_store_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:t_store_admin_panel/features/media/screens/media.dart';
+import 'package:t_store_admin_panel/features/shop/screens/brand/all_brand/brands.dart';
+import 'package:t_store_admin_panel/features/shop/screens/brand/create_brand/create_brand.dart';
+import 'package:t_store_admin_panel/features/shop/screens/brand/edit_brand/edit_brand.dart';
 import 'package:t_store_admin_panel/features/shop/screens/category/all_categories/categories.dart';
 import 'package:t_store_admin_panel/features/shop/screens/category/create_category/create_category.dart';
 import 'package:t_store_admin_panel/features/shop/screens/category/edit_category/edit_category.dart';
@@ -17,9 +20,6 @@ class TAppRoutes {
     //   page: () => const ResponsiveDesignScreen(),
     //   middlewares: [TRouteMiddleware()],
     // ),
-    // GetPage(name: TRoutes.firstScreen, page: () => const FirstScreen()),
-    // GetPage(name: TRoutes.secondScreen, page: () => const SecondScreen(), middlewares: [TRouteMiddleware()]),
-    // GetPage(name: TRoutes.secondScreenUID, page: () => const SecondScreen()),
     GetPage(name: TRoutes.login, page: () => const LoginScreen()),
     GetPage(name: TRoutes.forgetPassword, page: () => const ForgetPasswordScreen()),
     GetPage(name: TRoutes.resetPassword, page: () => const ResetPasswordScreen()),
@@ -36,15 +36,15 @@ class TAppRoutes {
     // GetPage(name: TRoutes.createProduct, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
     // GetPage(name: TRoutes.editProduct, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
 
-    // //Categories
+    //Categories
     GetPage(name: TRoutes.categories, page: () => const CategoriesScreen(), middlewares: [TRouteMiddleware()]),
     GetPage(name: TRoutes.createCategory, page: () => const CreateCategoryScreen(), middlewares: [TRouteMiddleware()]),
     GetPage(name: TRoutes.editCategory, page: () => const EditCategoryScreen(), middlewares: [TRouteMiddleware()]),
 
-    // //Brands
-    // GetPage(name: TRoutes.brands, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.createBrand, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.editBrand, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
+    //Brands
+    GetPage(name: TRoutes.brands, page: () => const BrandsScreen(), middlewares: [TRouteMiddleware()]),
+    GetPage(name: TRoutes.createBrand, page: () => const CreateBrandScreen(), middlewares: [TRouteMiddleware()]),
+    GetPage(name: TRoutes.editBrand, page: () => const EditBrandScreen(), middlewares: [TRouteMiddleware()]),
 
     // //Customers
     // GetPage(name: TRoutes.customers, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),

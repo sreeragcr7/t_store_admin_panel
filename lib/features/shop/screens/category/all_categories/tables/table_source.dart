@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store_admin_panel/common/widgets/images/t_rounded_image.dart';
-import 'package:t_store_admin_panel/features/shop/screens/category/all_categories/tables/table_action_icon_buttons.dart';
+import 'package:t_store_admin_panel/features/shop/screens/category/all_categories/widgets/table_action_icon_buttons.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
