@@ -9,6 +9,7 @@ class EditCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final category = Get.arguments;
     return const TSiteTemplate(
       desktop: EditCategoryDesktopScreen(),
       tablet: EditCategoryTabletScreen(),

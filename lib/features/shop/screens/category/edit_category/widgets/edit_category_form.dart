@@ -7,8 +7,8 @@ import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 import 'package:t_store_admin_panel/utils/validators/validation.dart';
 
-class CreateCategoryForm extends StatelessWidget {
-  const CreateCategoryForm({super.key});
+class EditCategoryForm extends StatelessWidget {
+  const EditCategoryForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CreateCategoryForm extends StatelessWidget {
           children: [
             //Heading
             const SizedBox(height: TSizes.sm),
-            Text('Create New Category', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Update Category', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: TSizes.spaceBtwSections),
 
             //Name Text Field
