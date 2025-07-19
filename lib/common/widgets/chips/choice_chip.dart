@@ -14,20 +14,22 @@ class TChoiceChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final isColor = THelperFunctions.getColor(text) != null;
     return Theme(
+      //Use a transparent canvas color to match the existing styling
       data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
       child: ChoiceChip(
-        label: isColor ? const SizedBox() : Text(text),
-        selected: selected,
-        onSelected: onSelected,
-        labelStyle: TextStyle(color: selected ? TColors.white : null),
+        //Use this function to get Colors as a chip
         avatar:
             isColor
                 ? TCircularContainer(width: 50, height: 50, backgroundColor: THelperFunctions.getColor(text)!)
                 : null,
-        labelPadding: isColor ? const EdgeInsets.all(0) : null,
-        padding: isColor ? const EdgeInsets.all(0) : null,
-        shape: isColor ? const CircleBorder() : null,
+        selected: selected,
+        onSelected: onSelected,
         backgroundColor: isColor ? THelperFunctions.getColor(text)! : null,
+        labelStyle: TextStyle(color: selected ? TColors.white : null),
+        shape: isColor ? const CircleBorder() : null,
+        label: isColor ? const SizedBox() : Text(text),
+        padding: isColor ? const EdgeInsets.all(0) : null,
+        labelPadding: isColor ? const EdgeInsets.all(0) : null,
       ),
     );
   }
