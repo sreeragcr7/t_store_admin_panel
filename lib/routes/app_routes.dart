@@ -3,6 +3,9 @@ import 'package:t_store_admin_panel/features/authentication/screens/forget_passw
 import 'package:t_store_admin_panel/features/authentication/screens/login/login.dart';
 import 'package:t_store_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:t_store_admin_panel/features/media/screens/media.dart';
+import 'package:t_store_admin_panel/features/shop/screens/banner/all_banner/banners.dart';
+import 'package:t_store_admin_panel/features/shop/screens/banner/create_banner/create_banner.dart';
+import 'package:t_store_admin_panel/features/shop/screens/banner/edit_banner/edit_banner.dart';
 import 'package:t_store_admin_panel/features/shop/screens/brand/all_brand/brands.dart';
 import 'package:t_store_admin_panel/features/shop/screens/brand/create_brand/create_brand.dart';
 import 'package:t_store_admin_panel/features/shop/screens/brand/edit_brand/edit_brand.dart';
@@ -26,10 +29,10 @@ class TAppRoutes {
     GetPage(name: TRoutes.dashboard, page: () => const DashboardScreen(), middlewares: [TRouteMiddleware()]),
     GetPage(name: TRoutes.media, page: () => const MediaScreen(), middlewares: [TRouteMiddleware()]),
 
-    // //Banners
-    // GetPage(name: TRoutes.banners, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.createBanner, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.editBanner, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
+    //Banners
+    GetPage(name: TRoutes.banners, page: () => const BannersScreen(), middlewares: [TRouteMiddleware()]),
+    GetPage(name: TRoutes.createBanner, page: () => const CreateBannerScreen(), middlewares: [TRouteMiddleware()]),
+    GetPage(name: TRoutes.editBanner, page: () => const EditBannerScreen(), middlewares: [TRouteMiddleware()]),
 
     // //Products
     // GetPage(name: TRoutes.products, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),

@@ -67,11 +67,12 @@ flutter:
   #--------------- LOCAL ASSETS -------------#
   assets:
     - assets/logos/
-    - assets/images/contents/
     - assets/images/user/
+    - assets/images/banners/
+    - assets/images/contents/
     - assets/images/animations/
-    - assets/icons/payment_methods/
     - assets/icons/brands/
+    - assets/icons/payment_methods/
     - .env
 
   
