@@ -4,7 +4,7 @@ import 'package:get/state_manager.dart';
 import 'package:t_store_admin_panel/common/widgets/breadcrumbs/breadcrumbs_with_heading.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
 import 'package:t_store_admin_panel/common/widgets/data_table/table_header.dart';
-import 'package:t_store_admin_panel/features/shop/screens/banner/all_banner/tables/data_table.dart';
+import 'package:t_store_admin_panel/features/shop/screens/banner/all_banner/tables/banners_table.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 

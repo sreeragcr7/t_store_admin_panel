@@ -11,6 +11,8 @@ class TImages {
 
   //Default
   static const String defaultImageIcon = 'assets/images/contents/imageIcon.png';
+  static const String colorBoxes = 'assets/images/contents/colorBoxes.png';
+  static const String emptyBox = 'assets/images/contents/emptyBox.png';
 
   // --- Profile
   static const String user = 'assets/images/user/user.png';

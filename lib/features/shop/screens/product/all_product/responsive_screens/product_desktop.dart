@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/instance_manager.dart';
 import 'package:t_store_admin_panel/common/widgets/breadcrumbs/breadcrumbs_with_heading.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
 import 'package:t_store_admin_panel/common/widgets/data_table/table_header.dart';
-import 'package:t_store_admin_panel/features/shop/screens/brand/all_brand/tables/brands_table.dart';
+import 'package:t_store_admin_panel/features/shop/screens/product/all_product/table/products_table.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 
-class BrandsMobileScreen extends StatelessWidget {
-  const BrandsMobileScreen({super.key});
+class ProductDesktopScreen extends StatelessWidget {
+  const ProductDesktopScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +20,24 @@ class BrandsMobileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //Breadcrumbs
-              TBreadcrumbsWithHeading(returnToPreviousScreen: false, heading: 'Brands', breadscrumbItems: ['Brands']),
+              //Breadscrumbs
+              TBreadcrumbsWithHeading(
+                returnToPreviousScreen: false,
+                heading: 'Products',
+                breadscrumbItems: ['Products'],
+              ),
               const SizedBox(height: TSizes.spaceBtwSections / 2),
 
-              //Table body
+              //Table Body
               TRoundedContainer(
                 child: Column(
                   children: [
                     //Table Header
-                    TTableHeader(buttonText: 'Create New Brand', onPressed: () => Get.toNamed(TRoutes.createBrand)),
+                    TTableHeader(buttonText: 'Add Product', onPressed: () => Get.toNamed(TRoutes.createProduct)),
                     const SizedBox(height: TSizes.spaceBtwItems),
 
-                    //Table
-                    const BrandTable(),
+                    // Table
+                    ProductsTable(),
                   ],
                 ),
               ),

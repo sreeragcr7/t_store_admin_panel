@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
-import 'package:t_store_admin_panel/features/shop/screens/dashboard/tables/data_table.dart';
+import 'package:t_store_admin_panel/features/shop/screens/dashboard/tables/dashboard_table.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/widgets/dashboard_card.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/widgets/order_status_pi_graph.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/widgets/weekly_sales.dart';
