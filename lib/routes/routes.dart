@@ -27,10 +27,10 @@ class TRoutes {
   static const editBrand = '/editBrand';
 
   static const customers = '/customers';
-  static const createCustomer = '/createCustomer';
-  static const editCustomer = '/editCustomer';
+  static const customerDetails = '/customerDetails';
 
   static const orders = '/orders';
+  static const orderDetails = '/orderDetails';
   static const createOrder = '/createOrder';
   static const editOrder = '/editOrder';
 
