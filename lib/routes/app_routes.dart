@@ -15,6 +15,8 @@ import 'package:t_store_admin_panel/features/shop/screens/category/edit_category
 import 'package:t_store_admin_panel/features/shop/screens/customer/all_customers/customers.dart';
 import 'package:t_store_admin_panel/features/shop/screens/customer/customer_details/customer_details.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/dashboard.dart';
+import 'package:t_store_admin_panel/features/shop/screens/order/all_orders/orders.dart';
+import 'package:t_store_admin_panel/features/shop/screens/order/order_details.dart/order_details.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/all_product/products.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/create_product/create_product.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/edit_product/edit_product.dart';
@@ -23,11 +25,6 @@ import 'package:t_store_admin_panel/routes/routes_middleware.dart';
 
 class TAppRoutes {
   static final List<GetPage> pages = [
-    // GetPage(
-    //   name: TRoutes.responsiveDesignTutScreen,
-    //   page: () => const ResponsiveDesignScreen(),
-    //   middlewares: [TRouteMiddleware()],
-    // ),
     GetPage(name: TRoutes.login, page: () => const LoginScreen()),
     GetPage(name: TRoutes.forgetPassword, page: () => const ForgetPasswordScreen()),
     GetPage(name: TRoutes.resetPassword, page: () => const ResetPasswordScreen()),
@@ -62,9 +59,8 @@ class TAppRoutes {
       middlewares: [TRouteMiddleware()],
     ),
 
-    // //Orders
-    // GetPage(name: TRoutes.orders, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.createOrder, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
-    // GetPage(name: TRoutes.editOrder, page: () => const LoginScreen(), middlewares: [TRouteMiddleware()),
+    //Orders
+    GetPage(name: TRoutes.orders, page: () => const OrdersScreen(), middlewares: [TRouteMiddleware()]),
+    GetPage(name: TRoutes.orderDetails, page: () => const OrderDetailsScreen(), middlewares: [TRouteMiddleware()]),
   ];
 }
