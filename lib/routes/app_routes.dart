@@ -3,6 +3,8 @@ import 'package:t_store_admin_panel/features/authentication/screens/forget_passw
 import 'package:t_store_admin_panel/features/authentication/screens/login/login.dart';
 import 'package:t_store_admin_panel/features/authentication/screens/reset_password/reset_password.dart';
 import 'package:t_store_admin_panel/features/media/screens/media.dart';
+import 'package:t_store_admin_panel/features/personalization/screens/profile/profile.dart';
+import 'package:t_store_admin_panel/features/personalization/screens/settings/settings.dart';
 import 'package:t_store_admin_panel/features/shop/screens/banner/all_banner/banners.dart';
 import 'package:t_store_admin_panel/features/shop/screens/banner/create_banner/create_banner.dart';
 import 'package:t_store_admin_panel/features/shop/screens/banner/edit_banner/edit_banner.dart';
@@ -62,5 +64,11 @@ class TAppRoutes {
     //Orders
     GetPage(name: TRoutes.orders, page: () => const OrdersScreen(), middlewares: [TRouteMiddleware()]),
     GetPage(name: TRoutes.orderDetails, page: () => const OrderDetailsScreen(), middlewares: [TRouteMiddleware()]),
+
+    //Settings
+    GetPage(name: TRoutes.settings, page: () => const SettingsScreen(), middlewares: [TRouteMiddleware()]),
+
+    //Profile
+    GetPage(name: TRoutes.profile, page: () => const ProfileScreen(), middlewares: [TRouteMiddleware()]),
   ];
 }
