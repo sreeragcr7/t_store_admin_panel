@@ -39,6 +39,7 @@ class MediaContent extends StatelessWidget {
         children: [
           //Media images header
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
@@ -255,7 +256,12 @@ class MediaContent extends StatelessWidget {
           child: ElevatedButton.icon(
             label: const Text('Add'),
             icon: const Icon(Iconsax.image),
-            onPressed: () => Get.back(result: selectedImages),
+            // onPressed: () => Get.back(result: selectedImages),
+            onPressed: () {
+              // Return only selected images
+              final selected = selectedImages.where((img) => img.isSeleceted.value).toList();
+              Get.back(result: selected);
+            },
           ),
         ),
       ],

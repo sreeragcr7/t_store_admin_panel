@@ -2,6 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:t_store_admin_panel/common/widgets/images/t_rounded_image.dart';
+import 'package:t_store_admin_panel/features/shop/controllers/product/product_controller.dart';
 import 'package:t_store_admin_panel/features/shop/screens/category/all_categories/widgets/table_action_icon_buttons.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
@@ -10,26 +11,31 @@ import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 
 class ProductsRows extends DataTableSource {
+  final controller = ProductController.instance;
   @override
   DataRow? getRow(int index) {
+    final product = controller.filteredItems[index];
     return DataRow2(
+      selected: controller.selectedRows[index],
+      onTap: () => Get.toNamed(TRoutes.editProduct, arguments: product),
+      onSelectChanged: (value) => controller.selectedRows[index] = value ?? false,
       cells: [
         DataCell(
           Row(
             children: [
-              const TRoundedImage(
+              TRoundedImage(
                 width: 50,
                 height: 50,
                 padding: TSizes.xs,
-                image: TImages.banner1,
-                imageType: ImageType.asset,
+                image: product.thumbnail,
+                imageType: ImageType.network,
                 borderRadius: TSizes.borderRadiusMd,
                 backgroundColor: TColors.primaryBackground,
               ),
               const SizedBox(width: TSizes.spaceBtwItems),
               Flexible(
                 child: Text(
-                  'Product Title',
+                  product.title,
                   style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: TColors.primary),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -37,25 +43,26 @@ class ProductsRows extends DataTableSource {
             ],
           ),
         ),
-        const DataCell(Text('256')),
+        DataCell(Text(controller.getProductStockTotal(product))),
+        DataCell(Text(controller.getProductSoldQuantity(product))),
 
         //Brand
         DataCell(
           Row(
             children: [
-              const TRoundedImage(
+              TRoundedImage(
                 width: 35,
                 height: 35,
                 padding: TSizes.xs,
-                image: TImages.nikeBrand,
-                imageType: ImageType.asset,
                 borderRadius: TSizes.borderRadiusMd,
                 backgroundColor: TColors.primaryBackground,
+                imageType: product.brand != null ? ImageType.network : ImageType.asset,
+                image: product.brand != null ? product.brand!.image : TImages.defaultImageIcon,
               ),
               const SizedBox(width: TSizes.spaceBtwItems),
               Flexible(
                 child: Text(
-                  'Nike',
+                  product.brand != null ? product.brand!.name : '',
                   style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: TColors.primary),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -63,11 +70,16 @@ class ProductsRows extends DataTableSource {
             ],
           ),
         ),
-        const DataCell(Text('\$99.9')),
+        DataCell(Text('\$${controller.getProductPrice(product)}')),
 
-        DataCell(Text(DateTime.now().toString())),
+        DataCell(Text(product.formattedDate)),
 
-        DataCell(TTableActionButtons(onEditPressed: () => Get.toNamed(TRoutes.editProduct), onDeletePressed: () {})),
+        DataCell(
+          TTableActionButtons(
+            onEditPressed: () => Get.toNamed(TRoutes.editProduct, arguments: product),
+            onDeletePressed: () => controller.confirmAndDeleteItem(product),
+          ),
+        ),
       ],
     );
   }
@@ -76,8 +88,8 @@ class ProductsRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => 100;
+  int get rowCount => controller.filteredItems.length;
 
   @override
-  int get selectedRowCount => 0;
+  int get selectedRowCount => controller.selectedRows.where((selected) => selected).length;
 }

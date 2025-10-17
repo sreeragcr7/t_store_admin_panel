@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:t_store_admin_panel/common/widgets/breadcrumbs/breadcrumbs_with_heading.dart';
+import 'package:t_store_admin_panel/features/shop/models/category_model.dart';
 import 'package:t_store_admin_panel/features/shop/screens/category/edit_category/widgets/edit_category_form.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 
 class EditCategoryDesktopScreen extends StatelessWidget {
-  const EditCategoryDesktopScreen({
-    super.key,
-    // required this.category
-  });
+  const EditCategoryDesktopScreen({super.key, required this.category});
 
-  // final CategoryModel category;
+  final CategoryModel category;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,7 @@ class EditCategoryDesktopScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections),
 
               //Form
-              EditCategoryForm(),
+              EditCategoryForm(category: category,),
             ],
           ),
         ),

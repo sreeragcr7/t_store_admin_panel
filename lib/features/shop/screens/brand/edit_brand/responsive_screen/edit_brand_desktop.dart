@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:t_store_admin_panel/common/widgets/breadcrumbs/breadcrumbs_with_heading.dart';
+import 'package:t_store_admin_panel/features/shop/models/brand_model.dart';
 import 'package:t_store_admin_panel/features/shop/screens/brand/edit_brand/widgets/edit_brand_from.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 
 class EditBrandDesktopScreen extends StatelessWidget {
-  const EditBrandDesktopScreen({super.key});
+  const EditBrandDesktopScreen({super.key, required this.brand});
+
+  final BrandModel brand;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +28,10 @@ class EditBrandDesktopScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections / 2),
 
               //Form
-              EditBrandFrom()
+              EditBrandFrom(brand: brand,),
             ],
-          ), 
           ),
+        ),
       ),
     );
   }

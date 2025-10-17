@@ -58,7 +58,7 @@ class TLoaders {
       colorText: TColors.white,
       backgroundColor: Colors.orange,
       snackPosition: SnackPosition.BOTTOM,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
       margin: const EdgeInsets.all(20),
       icon: const Icon(Iconsax.warning_2, color: TColors.white),
     );

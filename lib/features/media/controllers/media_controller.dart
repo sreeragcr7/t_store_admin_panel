@@ -12,7 +12,6 @@ import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
-import 'package:t_store_admin_panel/utils/constants/text_strings.dart';
 import 'package:t_store_admin_panel/utils/popups/circular_loader.dart';
 import 'package:t_store_admin_panel/utils/popups/dialogs.dart';
 import 'package:t_store_admin_panel/utils/popups/full_screen_loader.dart';
@@ -243,27 +242,29 @@ class MediaController extends GetxController {
 
   ///Get storage path
   String getSelectedPath() {
-    String path = '';
-    switch (selectedPath.value) {
-      case MediaCategory.banners:
-        path = TTexts.bannersStoragePath;
-        break;
-      case MediaCategory.brands:
-        path = TTexts.brandsStoragePath;
-        break;
-      case MediaCategory.categories:
-        path = TTexts.categoriesStoragePath;
-        break;
-      case MediaCategory.products:
-        path = TTexts.productsStoragePath;
-        break;
-      case MediaCategory.users:
-        path = TTexts.usersStoragePath;
-        break;
-      default:
-        path = 'Others';
-    }
-    return path;
+    // String path = '';
+    // switch (selectedPath.value) {
+    //   case MediaCategory.banners:
+    //     path = TTexts.bannersStoragePath;
+    //     break;
+    //   case MediaCategory.brands:
+    //     path = TTexts.brandsStoragePath;
+    //     break;
+    //   case MediaCategory.categories:
+    //     path = TTexts.categoriesStoragePath;
+    //     break;
+    //   case MediaCategory.products:
+    //     path = TTexts.productsStoragePath;
+    //     break;
+    //   case MediaCategory.users:
+    //     path = TTexts.usersStoragePath;
+    //     break;
+    //   default:
+    //     path = 'Images/Others';
+    // }
+    // return 'Images/$path';
+    return 'Images'; // Only the base Images folder
+    // return 'Images/${selectedPath.value.name}';
   }
 
   //Popup Confirmation to remove cloud image
@@ -335,7 +336,7 @@ class MediaController extends GetxController {
   }
 
   //Images Selection bottom sheet
-  Future<List<ImageModel>?> selectedImagesFromMedia({
+  Future<List<ImageModel>?> selectImagesFromMedia({
     List<String>? selectedUrls,
     bool allowSelection = true,
     bool multipleSelection = false,
@@ -367,4 +368,5 @@ class MediaController extends GetxController {
 
     return selectedImages;
   }
+  
 }

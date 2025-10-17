@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:t_store_admin_panel/common/widgets/breadcrumbs/breadcrumbs_with_heading.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
+import 'package:t_store_admin_panel/features/shop/models/product_model.dart';
+import 'package:t_store_admin_panel/features/shop/screens/product/edit_product/widgets/bottom_navigation_widget.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/create_product/widgets/additional_images.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/create_product/widgets/attributes_widget.dart';
-import 'package:t_store_admin_panel/features/shop/screens/product/create_product/widgets/bottom_navigation_widget.dart';
+
 import 'package:t_store_admin_panel/features/shop/screens/product/create_product/widgets/brand_widget.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/create_product/widgets/categories_widget.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/create_product/widgets/product_type_widget.dart';
@@ -18,12 +20,14 @@ import 'package:t_store_admin_panel/features/shop/screens/product/create_product
 import 'package:t_store_admin_panel/utils/device/device_utility.dart';
 
 class EditProductTabletScreen extends StatelessWidget {
-  const EditProductTabletScreen({super.key});
+  const EditProductTabletScreen({super.key, required this.product});
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const ProductBottomNavigationButtons(),
+      bottomNavigationBar: ProductBottomNavigationButtons(product: product),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -33,8 +37,8 @@ class EditProductTabletScreen extends StatelessWidget {
               //Breadscrumbs
               TBreadcrumbsWithHeading(
                 returnToPreviousScreen: true,
-                heading: 'Create Product',
-                breadscrumbItems: [TRoutes.products, 'Create Product'],
+                heading: 'Edit Product',
+                breadscrumbItems: [TRoutes.products, 'Edit Product'],
               ),
               const SizedBox(height: TSizes.spaceBtwSections / 2),
 

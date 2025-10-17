@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
 import 'package:t_store_admin_panel/common/widgets/images/t_rounded_image.dart';
-import 'package:t_store_admin_panel/features/authentication/models/user_model.dart';
+import 'package:t_store_admin_panel/features/personalization/models/user_model.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
@@ -25,11 +25,11 @@ class CustomerInfo extends StatelessWidget {
           //Personal Info Card
           Row(
             children: [
-              const TRoundedImage(
+              TRoundedImage(
                 padding: 0,
                 backgroundColor: TColors.primaryBackground,
-                image: TImages.user,
-                imageType: ImageType.asset,
+                image: customer.profilePicture.isNotEmpty ? customer.profilePicture : TImages.user,
+                imageType: customer.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
               ),
               const SizedBox(width: TSizes.spaceBtwItems),
               Expanded(
@@ -38,12 +38,12 @@ class CustomerInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Arun K',
+                      customer.fullName,
                       style: Theme.of(context).textTheme.titleLarge,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
-                    const Text('arun@gmail.com', overflow: TextOverflow.ellipsis, maxLines: 1),
+                    Text(customer.email, overflow: TextOverflow.ellipsis, maxLines: 1),
                   ],
                 ),
               ),
@@ -57,7 +57,7 @@ class CustomerInfo extends StatelessWidget {
               const SizedBox(width: 120, child: Text('Username')),
               const Text(':'),
               const SizedBox(width: TSizes.spaceBtwItems / 2),
-              Expanded(child: Text('cwt', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(child: Text(customer.username, style: Theme.of(context).textTheme.titleMedium)),
             ],
           ),
           const SizedBox(height: TSizes.spaceBtwItems),
@@ -75,7 +75,7 @@ class CustomerInfo extends StatelessWidget {
               const SizedBox(width: 120, child: Text('Phone Number')),
               const Text(':'),
               const SizedBox(width: TSizes.spaceBtwItems / 2),
-              Expanded(child: Text('+91 9687001586', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(child: Text(customer.phoneNumber, style: Theme.of(context).textTheme.titleMedium)),
             ],
           ),
           const SizedBox(height: TSizes.spaceBtwItems),

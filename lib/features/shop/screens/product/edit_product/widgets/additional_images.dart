@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
+import 'package:t_store_admin_panel/common/widgets/uploader/image_uploader.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
+import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
 
@@ -70,8 +72,7 @@ class ProductAdditionalImages extends StatelessWidget {
 
   //Widgets to display Either Uploaded Images or Empty List
   Widget _uploadImagesOrEmptyList() {
-    // additionalProductImagesURLs.isNotEmpty ? _uploadedImages() :
-    return emptyList();
+    return additionalProductImagesURLs.isNotEmpty ? _uploadedImages() : emptyList();
   }
 
   //Widgets to display Empty List holder
@@ -87,25 +88,25 @@ class ProductAdditionalImages extends StatelessWidget {
   }
 
   //Widgets to diaplay Uploaded Images
-  // ListView _uploadedImages() {
-  //   return ListView.separated(
-  //     scrollDirection: Axis.horizontal,
-  //     itemCount: additionalProductImagesURLs.length,
-  //     separatorBuilder: (context, index) => const SizedBox(width: TSizes.spaceBtwItems / 2),
-  //     itemBuilder: (context, index) {
-  //       final image = additionalProductImagesURLs[index];
-  //       return TImageUploader(
-  //         top: 0,
-  //         right: 0,
-  //         width: 80,
-  //         height: 80,
-  //         left: null,
-  //         image: image,
-  //         icon: Iconsax.close_circle,
-  //         imageType: ImageType.network,
-  //         onIconButtonPressed: () => onTapToRemoveImages!(index),
-  //       );
-  //     },
-  //   );
-  // }
+  ListView _uploadedImages() {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: additionalProductImagesURLs.length,
+      separatorBuilder: (context, index) => const SizedBox(width: TSizes.spaceBtwItems / 2),
+      itemBuilder: (context, index) {
+        final image = additionalProductImagesURLs[index];
+        return TImageUploader(
+          top: 0,
+          right: 0,
+          width: 80,
+          height: 80,
+          left: null,
+          image: image,
+          icon: Iconsax.close_circle,
+          imageType: ImageType.network,
+          onIconButtonPressed: () => onTapToRemoveImages!(index),
+        );
+      },
+    );
+  }
 }

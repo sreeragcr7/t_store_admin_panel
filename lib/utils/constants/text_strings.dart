@@ -12,13 +12,11 @@ class TTexts {
   static const String adminPassword = 'Admin@123';
 
   // --- Storage path
-  static const String bannersStoragePath = '/Banners';
-  static const String brandsStoragePath = '/Brands';
-  static const String categoriesStoragePath = '/Categories';
-  static const String productsStoragePath = '/Products';
-  static const String usersStoragePath = '/Users';
-
-  
+  static const String bannersStoragePath = 'Banners';
+  static const String brandsStoragePath = 'Brands';
+  static const String categoriesStoragePath = 'Categories';
+  static const String productsStoragePath = 'Products';
+  static const String usersStoragePath = 'Users';
 
   // --- OnBoarding text
   static const String onBoardingTitle1 = 'Choose your product';

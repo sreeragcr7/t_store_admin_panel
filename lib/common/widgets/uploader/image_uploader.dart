@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/circular_container.dart';
 import 'package:t_store_admin_panel/common/widgets/icons/t_circular_icon.dart';
 import 'package:t_store_admin_panel/common/widgets/images/t_circular_image.dart';
 import 'package:t_store_admin_panel/common/widgets/images/t_rounded_image.dart';
@@ -24,7 +25,17 @@ class TImageUploader extends StatelessWidget {
     this.bottom = 0,
     this.right,
     this.left = 0,
+    this.loading = false,
+    // this.iconSize = TSizes.md,
+    // this.iconContainerSize = 24,
   });
+
+  // final double iconSize;
+
+  // final double iconContainerSize;
+
+  //whether to display the loading insted of icon
+  final bool loading;
 
   //whether to display the image in a circular shape
   final bool circular;
@@ -67,8 +78,8 @@ class TImageUploader extends StatelessWidget {
     return Stack(
       children: [
         //Display the image in either circular or rounded shape
-        circular
-            ? TCircularImage(
+        !circular
+            ? TRoundedImage(
               image: image,
               width: width,
               height: height,
@@ -76,7 +87,7 @@ class TImageUploader extends StatelessWidget {
               memoryImage: memoryImage,
               backgroundColor: TColors.primaryBackground,
             )
-            : TRoundedImage(
+            : TCircularImage(
               image: image,
               width: width,
               height: height,
@@ -91,13 +102,24 @@ class TImageUploader extends StatelessWidget {
           left: left,
           right: right,
           bottom: bottom,
-          child: TCircularIcon(
-            icon: icon,
-            size: TSizes.md,
-            color: Colors.white,
-            onPressed: onIconButtonPressed,
-            backgroundColor: TColors.primary.withAlpha(230),
-          ),
+          child:
+              loading
+                  ? const TCircularContainer(
+                    height: TSizes.xl,
+                    width: TSizes.xl,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      backgroundColor: TColors.primary,
+                      color: Colors.white,
+                    ),
+                  )
+                  : TCircularIcon(
+                    icon: icon,
+                    size: TSizes.md,
+                    color: Colors.white,
+                    onPressed: onIconButtonPressed,
+                    backgroundColor: TColors.primary.withAlpha(230),
+                  ),
         ),
       ],
     );

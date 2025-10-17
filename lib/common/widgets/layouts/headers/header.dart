@@ -3,7 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store_admin_panel/common/widgets/images/t_rounded_image.dart';
 import 'package:t_store_admin_panel/common/widgets/shimmers/shimmer_effect.dart';
-import 'package:t_store_admin_panel/features/authentication/controllers/user_controllers.dart';
+import 'package:t_store_admin_panel/features/personalization/controllers/user_controllers.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
@@ -24,31 +24,43 @@ class THeader extends StatelessWidget implements PreferredSizeWidget {
         color: TColors.white,
         border: Border(bottom: BorderSide(color: TColors.grey, width: 1)),
       ),
-      padding: EdgeInsets.symmetric(horizontal: TSizes.md, vertical: TSizes.xs),
+      padding: const EdgeInsets.symmetric(horizontal: TSizes.md, vertical: TSizes.xs),
       child: AppBar(
+        automaticallyImplyLeading: false,
         //Mobile menu
         leading:
             !TDeviceUtils.isDesktopScreen(context)
                 ? IconButton(onPressed: () => scaffoldKey?.currentState?.openDrawer(), icon: const Icon(Iconsax.menu))
-                : null,
+                : const SizedBox.shrink(),
 
         //Search Field
-        title: SizedBox(
-          width: 300,
-          height: 45,
-          child: TextFormField(
-            decoration: InputDecoration(prefixIcon: Icon(Iconsax.search_normal), hintText: 'Search here..'),
-          ),
-        ),
+        title:
+            TDeviceUtils.isDesktopScreen(context)
+                ? SizedBox(
+                  width: 300,
+                  height: 45,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Iconsax.search_normal),
+                      hintText: 'Search here..',
+                    ),
+                  ),
+                )
+                : null,
 
         //Actions
         actions: [
+          //Search icon on mobile
+          if (!TDeviceUtils.isDesktopScreen(context))
+            IconButton(icon: const Icon(Iconsax.search_normal), onPressed: () {}),
+
           //Notification Icon
-          IconButton(onPressed: () {}, icon: const Icon(Iconsax.notification)),
+          IconButton(icon: const Icon(Iconsax.notification), onPressed: () {}),
           const SizedBox(width: TSizes.spaceBtwItems / 2),
 
           //User Data
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //Image
               Obx(

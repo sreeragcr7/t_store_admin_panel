@@ -84,12 +84,7 @@ class TPaginatedDataTable extends StatelessWidget {
               topRight: Radius.circular(TSizes.borderRadiusMd),
             ),
           ),
-          empty: TAnimationLoaderWidget(
-            animation: TImages.emailLoading,
-            text: 'Nothing Found',
-            height: 200,
-            width: 200,
-          ),
+          empty: TAnimationLoaderWidget(animation: TImages.emptyFolder, text: 'Nothing Found', height: 200, width: 200),
 
           //Sorting
           sortAscending: sortAscending,
@@ -98,7 +93,7 @@ class TPaginatedDataTable extends StatelessWidget {
             if (sorted) {
               return Icon(ascending ? Iconsax.arrow_up_3 : Iconsax.arrow_down, size: TSizes.iconSm);
             } else {
-              return const Icon(Iconsax.arrow_up_3, size: TSizes.iconSm);
+              return const Icon(Iconsax.arrow_3, size: TSizes.iconSm);
             }
           },
         ),

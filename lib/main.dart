@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -24,15 +26,19 @@ Future<void> main() async {
   setPathUrlStrategy();
 
   //Initialize Firebase & Authentication Repository
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  ).then((_) => Get.put(AuthenticationRepository()));
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((_) {
+    if (kIsWeb) {
+      FirebaseFirestore.instance.enableNetwork();
+    }
+    Get.put(AuthenticationRepository());
+  });
 
   // Initialize Supabase
   try {
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+      headers: {'Authorization': 'Bearer ${dotenv.env['SUPABASE_SERVICE_KEY']}'},
       storageOptions: const StorageClientOptions(retryAttempts: 3),
     );
   } catch (e, st) {

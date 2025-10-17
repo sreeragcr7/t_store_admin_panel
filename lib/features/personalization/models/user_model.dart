@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:t_store_admin_panel/features/personalization/models/address_model.dart';
+import 'package:t_store_admin_panel/features/shop/models/order_mode.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/formatters/formatters.dart';
 
@@ -13,6 +15,8 @@ class UserModel {
   AppRole role;
   DateTime? createdAt;
   DateTime? updatedAt;
+  List<OrderModel>? orders;
+  List<AddressModel>? addresses;
 
   ///Constructor for UserModel
   UserModel({
@@ -35,7 +39,7 @@ class UserModel {
   String get formattedPhoneNo => TFormatter.formatPhoneNumber(phoneNumber);
 
   ///Static function to create an empty user model
-  static UserModel empty() => UserModel(email: "");
+  static UserModel empty() => UserModel(email: ""); //Default createdAt to current time
 
   ///Convert model to jSON structure for storing data in Firebase.
   Map<String, dynamic> toJson() {
@@ -64,10 +68,14 @@ class UserModel {
         email: data.containsKey('Email') ? data["Email"] ?? "" : "",
         phoneNumber: data.containsKey('PhoneNumber') ? data["PhoneNumber"] ?? "" : "",
         profilePicture: data.containsKey('ProfilePicture') ? data["ProfilePicture"] ?? "" : "",
-        role: data.containsKey('Role') ? (data["Role"] ?? AppRole.user) == AppRole.admin.name.toString() ? AppRole.admin : AppRole.user : AppRole.user,
+        role:
+            data.containsKey('Role')
+                ? (data["Role"] ?? AppRole.user) == AppRole.admin.name.toString()
+                    ? AppRole.admin
+                    : AppRole.user
+                : AppRole.user,
         createdAt: data.containsKey('CreatedAt') ? data["CreatedAt"]?.toDate() ?? DateTime.now() : DateTime.now(),
         updatedAt: data.containsKey('UpdatedAt') ? data["UpdatedAt"]?.toDate() ?? DateTime.now() : DateTime.now(),
-        
       );
     } else {
       return empty();

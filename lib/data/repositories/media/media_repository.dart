@@ -17,12 +17,12 @@ class MediaRepository extends GetxController {
   Future<ImageModel> uploadImageFileInStorage({
     required Uint8List fileData,
     required String mimeType,
-    required String path,
+    required String path, //This will now be "Images"
     required String imageName,
   }) async {
     // bucket name
     final bucket = storage.from('profile');
-    final fullPath = '$path/$imageName';
+    final fullPath = '$path/$imageName'; //"Images/image_name.png"
 
     try {
       await bucket.uploadBinary(

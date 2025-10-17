@@ -4,6 +4,7 @@ import 'package:get/utils.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/helpers/helper_functions.dart';
 import 'package:t_store_admin_panel/common/widgets/loaders/animation_loader.dart';
+import 'package:t_store_admin_panel/utils/popups/circular_loader.dart';
 
 // A utility class for managing a full-screen loading dialog.
 class TFullScreenLoader {
@@ -33,6 +34,15 @@ class TFullScreenLoader {
               ),
             ),
           ),
+    );
+  }
+
+  static void popUpCircular() {
+    Get.defaultDialog(
+      title: '',
+      onWillPop: () async => false,
+      content: const TCircularLoader(),
+      backgroundColor: Colors.transparent,
     );
   }
 

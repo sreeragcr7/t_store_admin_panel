@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:t_store_admin_panel/data/repositories/authentication/authentication_repository.dart';
+import 'package:t_store_admin_panel/data/repositories/settings/settings_repository.dart';
 import 'package:t_store_admin_panel/data/repositories/user/user_repository.dart';
-import 'package:t_store_admin_panel/features/authentication/controllers/user_controllers.dart';
-import 'package:t_store_admin_panel/features/authentication/models/user_model.dart';
+import 'package:t_store_admin_panel/features/personalization/controllers/user_controllers.dart';
+import 'package:t_store_admin_panel/features/personalization/models/settings_model.dart';
+import 'package:t_store_admin_panel/features/personalization/models/user_model.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/constants/image_strings.dart';
 import 'package:t_store_admin_panel/utils/constants/text_strings.dart';
@@ -108,6 +110,12 @@ class LoginControllers extends GetxController {
           role: AppRole.admin,
           createdAt: DateTime.now(),
         ),
+      );
+
+      //Create setting record in the Firestore
+      final settingsRepository = Get.put(SettingsRepository());
+      await settingsRepository.registerSettings(
+        SettingsModel(appLogo: '', appName: 'My App', taxRate: 0, shippingCost: 0),
       );
 
       //Remove loader

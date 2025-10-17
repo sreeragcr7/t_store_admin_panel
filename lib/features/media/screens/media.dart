@@ -7,6 +7,6 @@ class MediaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TSiteTemplate(desktop: MediaDesktopScreen(),);
+    return TSiteTemplate(desktop: MediaDesktopScreen());
   }
 }

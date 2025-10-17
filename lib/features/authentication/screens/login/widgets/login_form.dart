@@ -16,14 +16,14 @@ class TLoginForm extends StatelessWidget {
     return Form(
       key: controller.loginFormKey,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
+        padding: const EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
         child: Column(
           children: [
             //Email
             TextFormField(
               controller: controller.email,
               validator: TValidator.validateEmail,
-              decoration: InputDecoration(labelText: TTexts.email, prefixIcon: Icon(Iconsax.direct_right)),
+              decoration: const InputDecoration(labelText: TTexts.email, prefixIcon: Icon(Iconsax.direct_right)),
             ),
             const SizedBox(height: TSizes.spaceBtwInputFields),
             //Password
@@ -73,7 +73,7 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(onPressed: () => controller.emailAndPasswordSignIn(), child: Text(TTexts.signIn)),
-              // child: ElevatedButton(onPressed: () => controller.registerAdmin(), child: Text(TTexts.signIn)),
+              // child: ElevatedButton(onPressed: () => controller.registerAdmin(), child: Text('Register Admin')),
             ),
           ],
         ),

@@ -8,9 +8,10 @@ class CreateProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TSiteTemplate(
+
+    return TSiteTemplate(
       desktop: CreateProductDesktopScreen(),
-      mobile: CreateProductMobileScreen(),
+      mobile: CreateProductMobileScreen()
     );
   }
 }

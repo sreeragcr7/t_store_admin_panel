@@ -19,10 +19,11 @@ import 'package:t_store_admin_panel/utils/constants/size.dart';
 class CreateProductMobileScreen extends StatelessWidget {
   const CreateProductMobileScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
-return Scaffold(
-      bottomNavigationBar: const ProductBottomNavigationButtons(),
+    return Scaffold(
+      bottomNavigationBar: ProductBottomNavigationButtons(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -44,7 +45,7 @@ return Scaffold(
                   //Basic Information
                   const ProductTitleAndDescription(),
                   const SizedBox(height: TSizes.spaceBtwSections),
-              
+
                   //Stock & Pricing
                   TRoundedContainer(
                     child: Column(
@@ -53,15 +54,15 @@ return Scaffold(
                         //Heading
                         Text('Stock & Pricing', style: Theme.of(context).textTheme.headlineSmall),
                         const SizedBox(height: TSizes.spaceBtwItems),
-              
+
                         //Product Type
                         const ProductTypeWidget(),
                         const SizedBox(height: TSizes.spaceBtwInputFields),
-              
+
                         //Stock
                         const ProductStockAndPricing(),
                         const SizedBox(height: TSizes.spaceBtwSections),
-              
+
                         //Attributes
                         const ProductAttributes(),
                         const SizedBox(height: TSizes.spaceBtwSections),
@@ -69,18 +70,18 @@ return Scaffold(
                     ),
                   ),
                   const SizedBox(height: TSizes.spaceBtwSections),
-              
+
                   //Variations
                   const ProductVariations(),
                   const SizedBox(height: TSizes.spaceBtwSections),
                 ],
               ),
               const SizedBox(width: TSizes.defaultSpace),
-              
+
               //Sidebar
               const ProductThumbnailImage(),
               const SizedBox(height: TSizes.spaceBtwSections),
-                        
+
               //Product Images
               TRoundedContainer(
                 child: Column(
@@ -97,15 +98,15 @@ return Scaffold(
                 ),
               ),
               const SizedBox(height: TSizes.spaceBtwSections),
-                        
+
               //Product Brand
               const ProductBrand(),
               const SizedBox(height: TSizes.spaceBtwSections),
-                        
+
               //Product Categories
               const ProductCategories(),
               const SizedBox(height: TSizes.spaceBtwSections),
-                        
+
               //Product Visiblity
               const ProductVisibilityWidget(),
               const SizedBox(height: TSizes.spaceBtwSections),
@@ -114,5 +115,5 @@ return Scaffold(
         ),
       ),
     );
-    }
+  }
 }

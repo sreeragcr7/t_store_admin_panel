@@ -10,10 +10,13 @@ class DashboardController extends GetxController {
   final RxMap<OrderStatus, int> orderStatusData = <OrderStatus, int>{}.obs;
   final RxMap<OrderStatus, double> totalAmounts = <OrderStatus, double>{}.obs;
 
-  //Order
+  // Order
   static final List<OrderModel> orders = [
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.delivered,
       totalAmount: 256,
       orderDate: DateTime(2025, 5, 20),
@@ -21,6 +24,9 @@ class DashboardController extends GetxController {
     ),
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.delivered,
       totalAmount: 349,
       orderDate: DateTime(2025, 5, 21),
@@ -28,6 +34,9 @@ class DashboardController extends GetxController {
     ),
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.delivered,
       totalAmount: 520,
       orderDate: DateTime(2025, 5, 22),
@@ -35,6 +44,9 @@ class DashboardController extends GetxController {
     ),
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.shipped,
       totalAmount: 349,
       orderDate: DateTime(2025, 5, 23),
@@ -42,6 +54,9 @@ class DashboardController extends GetxController {
     ),
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.processing,
       totalAmount: 720,
       orderDate: DateTime(2025, 5, 24),
@@ -49,6 +64,9 @@ class DashboardController extends GetxController {
     ),
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.pending,
       totalAmount: 720,
       orderDate: DateTime(2025, 5, 24),
@@ -56,6 +74,9 @@ class DashboardController extends GetxController {
     ),
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.pending,
       totalAmount: 720,
       orderDate: DateTime(2025, 5, 24),
@@ -63,6 +84,9 @@ class DashboardController extends GetxController {
     ),
     OrderModel(
       id: 'CWT0012',
+      items: List.empty(),
+      taxCost: 20,
+      shippingCost: 20,
       status: OrderStatus.cancelled,
       totalAmount: 720,
       orderDate: DateTime(2025, 5, 24),

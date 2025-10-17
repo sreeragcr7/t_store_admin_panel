@@ -26,7 +26,7 @@ class OrderDetailsDesktopScreen extends StatelessWidget {
               TBreadcrumbsWithHeading(
                 returnToPreviousScreen: true,
                 heading: order.id,
-                breadscrumbItems: [TRoutes.orders, 'Details'],
+                breadscrumbItems: const [TRoutes.orders, 'Details'],
               ),
               const SizedBox(height: TSizes.spaceBtwSections / 2),
 

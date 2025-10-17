@@ -30,6 +30,7 @@ class TImages {
   static const String emptyFolder = 'assets/images/animations/emptyfolder.json';
   static const String boxOpen = 'assets/images/animations/boxopen.json';
   static const String uploading = 'assets/images/animations/uploading.json';
+  static const String tailLoading = 'assets/images/animations/tailLoading.json';
 
   // -- Gif
 

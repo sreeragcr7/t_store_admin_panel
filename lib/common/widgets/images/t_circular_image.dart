@@ -20,7 +20,8 @@ class TCircularImage extends StatelessWidget {
     this.imageType = ImageType.asset,
     this.fit = BoxFit.cover,
     this.padding = TSizes.sm,
-    this.file
+    this.file,
+    this.margin,
   });
 
   final BoxFit? fit;
@@ -31,12 +32,14 @@ class TCircularImage extends StatelessWidget {
   final Color? backgroundColor;
   final Uint8List? memoryImage;
   final double width, height, padding;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
       height: height,
+      margin: margin,
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         //if image background color is null, then switch it to light & dark mode color design.
@@ -46,7 +49,6 @@ class TCircularImage extends StatelessWidget {
       child: _buildImageWidget(),
     );
   }
-
 
   Widget _buildImageWidget() {
     Widget imageWidget;
@@ -67,10 +69,7 @@ class TCircularImage extends StatelessWidget {
     }
 
     //Apply ClipRRect directly to the image widget
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(width >= height ? width : height), 
-      child: imageWidget,
-    );
+    return ClipRRect(borderRadius: BorderRadius.circular(width >= height ? width : height), child: imageWidget);
   }
 
   //Function to build the network image widget
@@ -123,4 +122,3 @@ class TCircularImage extends StatelessWidget {
     }
   }
 }
-

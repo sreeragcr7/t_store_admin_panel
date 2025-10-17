@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:t_store_admin_panel/common/widgets/breadcrumbs/breadcrumbs_with_heading.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
 import 'package:t_store_admin_panel/common/widgets/data_table/table_header.dart';
+import 'package:t_store_admin_panel/features/shop/controllers/product/product_controller.dart';
 import 'package:t_store_admin_panel/features/shop/screens/product/all_product/table/products_table.dart';
 import 'package:t_store_admin_panel/routes/routes.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
@@ -12,6 +13,8 @@ class ProductMobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final controller = Get.put(ProductController());
+
      return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -32,7 +35,11 @@ class ProductMobileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     //Table Header
-                    TTableHeader(buttonText: 'Add Product', onPressed: () => Get.toNamed(TRoutes.createProduct)),
+                    TTableHeader(
+                        buttonText: 'Add Product',
+                        onPressed: () => Get.toNamed(TRoutes.createProduct),
+                        searchOnChanged: (query) => controller.searchQuery(query),
+                      ),
                     const SizedBox(height: TSizes.spaceBtwItems),
 
                     // Table
