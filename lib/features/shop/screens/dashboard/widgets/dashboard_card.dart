@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
+import 'package:t_store_admin_panel/common/widgets/icons/t_circular_icon.dart';
 import 'package:t_store_admin_panel/common/widgets/texts/section_heading.dart';
 import 'package:t_store_admin_panel/utils/constants/colors.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
@@ -8,17 +9,22 @@ import 'package:t_store_admin_panel/utils/constants/size.dart';
 class TDashboardCard extends StatelessWidget {
   const TDashboardCard({
     super.key,
+    required this.context,
     required this.title,
     required this.subTitle,
     required this.stats,
     this.icon = Iconsax.arrow_up_3,
     this.color = TColors.success,
     this.onTap,
+    required this.headingIcon,
+    required this.headingIconColor,
+    required this.headingIconBgColor,
   });
 
+  final BuildContext context;
   final String title, subTitle;
-  final IconData icon;
-  final Color color;
+  final IconData icon, headingIcon;
+  final Color color, headingIconColor, headingIconBgColor;
   final int stats;
   final void Function()? onTap;
 
@@ -30,7 +36,18 @@ class TDashboardCard extends StatelessWidget {
       child: Column(
         children: [
           //Heading
-          TSectionHeading(title: title, textColor: TColors.textSecondary),
+          Row(
+            children: [
+              TCircularIcon(
+                icon: headingIcon,
+                backgroundColor: headingIconBgColor,
+                color: headingIconColor,
+                size: TSizes.md,
+              ),
+              const SizedBox(width: TSizes.spaceBtwItems),
+              TSectionHeading(title: title, textColor: TColors.textSecondary),
+            ],
+          ),
           const SizedBox(height: TSizes.spaceBtwSections),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

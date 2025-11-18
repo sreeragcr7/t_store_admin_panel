@@ -32,6 +32,29 @@ class BrandModel {
   String get formattedDate => TFormatter.formatDate(createdAt);
   String get formattedUpdatedAtDate => TFormatter.formatDate(updatedAt);
 
+  //CopyWith method
+  BrandModel copyWith({
+    String? id,
+    String? name,
+    String? image,
+    bool? isFeatured,
+    int? productsCount,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    List<CategoryModel>? brandCategories,
+  }) {
+    return BrandModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      isFeatured: isFeatured ?? this.isFeatured,
+      productsCount: productsCount ?? this.productsCount,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      brandCategories: brandCategories ?? this.brandCategories,
+    );
+  }
+
   //Convert Model to Json structure so that you can store data in Firebase
   toJson() {
     return {
@@ -87,6 +110,4 @@ class BrandModel {
       updatedAt: updatedAt?.toDate(), //
     );
   }
-
-
 }

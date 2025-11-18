@@ -61,19 +61,85 @@ class BrandRepository extends GetxController {
     }
   }
 
-  // //Create a new Brand document in the 'Brands' collection
-  // Future<String> createBrand(BrandModel brand) async {
-  //   try {
-  //     final result = await _db.collection('Brands').add(brand.toJson());
-  //     return result.id;
-  //   } on FirebaseException catch (e) {
-  //     throw TFirebaseException(e.code).message;
-  //   } on PlatformException catch (e) {
-  //     throw TPlatformException(e.code).message;
-  //   } catch (e) {
-  //     throw 'Something went wrong. Please try again';
-  //   }
-  // }
+  //Get products count for a specific brand
+  Future<int> getProductsCountForBrand(String brandId) async {
+    try {
+      final snapshot = await _db.collection('Products').where('Brand.Id', isEqualTo: brandId).get();
+      return snapshot.docs.length;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  //Update all brands products count
+  Future<void> updateAllBrandsProductsCount() async {
+    try {
+      final brands = await getAllBrands();
+
+      for (final brand in brands) {
+        final count = await getProductsCountForBrand(brand.id);
+        await updateBrandProductsCount(brand.id, count);
+      }
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  //Update specific brand's products count
+  Future<void> updateBrandProductsCount(String brandId, int count) async {
+    try {
+      await _db.collection('Brands').doc(brandId).update({
+        'ProductsCount': count,
+        'UpdatedAt': FieldValue.serverTimestamp(),
+      });
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  //Increment brand's products count by 1
+  Future<void> incrementBrandProductsCount(String brandId) async {
+    try {
+      await _db.collection('Brands').doc(brandId).update({
+        'ProductsCount': FieldValue.increment(1),
+        'UpdatedAt': FieldValue.serverTimestamp(),
+      });
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  //Decrement brand's products count by 1
+  Future<void> decrementBrandProductsCount(String brandId) async {
+    try {
+      await _db.collection('Brands').doc(brandId).update({
+        'ProductsCount': FieldValue.increment(-1),
+        'UpdatedAt': FieldValue.serverTimestamp(),
+      });
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
 
   //Create a new brand document in the 'Brands' collection
   Future<String> createBrand(BrandModel category) async {
@@ -94,7 +160,12 @@ class BrandRepository extends GetxController {
       batch.set(counterRef, {'lastId2': newId}, SetOptions(merge: true));
 
       final catRef = _db.collection('Brands').doc(newId.toString());
-      batch.set(catRef, category.toJson());
+
+      // Fix: Use the parameter's productsCount, default to 0 if null
+      final brandData = category.toJson();
+      brandData['ProductsCount'] = category.productsCount ?? 0;
+
+      batch.set(catRef, brandData);
 
       await batch.commit();
       return newId.toString();

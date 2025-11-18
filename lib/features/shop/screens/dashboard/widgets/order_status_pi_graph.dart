@@ -1,11 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/circular_container.dart';
-import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
 import 'package:t_store_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
 import 'package:t_store_admin_panel/utils/constants/size.dart';
+import 'package:t_store_admin_panel/utils/device/device_utility.dart';
 import 'package:t_store_admin_panel/utils/helpers/helper_functions.dart';
+import 'package:t_store_admin_panel/utils/popups/loader_animation.dart';
 
 class OrderStatusPiChart extends StatelessWidget {
   const OrderStatusPiChart({super.key});
@@ -13,44 +15,58 @@ class OrderStatusPiChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = DashboardController.instance;
-    return TRoundedContainer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Order Status', style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: TSizes.spaceBtwSections / 2),
-          //Pi-Graph
-          SizedBox(
-            height: 270,
-            child: PieChart(
-              PieChartData(
-                sections:
-                    controller.orderStatusData.entries.map((entry) {
-                      final status = entry.key;
-                      final count = entry.value;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        //Pi-Graph
+        Obx(
+          () =>
+              controller.orderStatusData.isNotEmpty
+                  ? SizedBox(
+                    height: 270,
+                    child: PieChart(
+                      PieChartData(
+                        sectionsSpace: 2,
+                        centerSpaceRadius: TDeviceUtils.isTabletScreen(context) ? 80 : 55,
+                        startDegreeOffset: 180,
+                        sections:
+                            controller.orderStatusData.entries.map((entry) {
+                              final OrderStatus status = entry.key;
+                              final int count = entry.value;
 
-                      return PieChartSectionData(
-                        radius: 70,
-                        title: count.toString(),
-                        value: count.toDouble(),
-                        color: THelperFunctions.getOrderStatusColor(status),
-                        titleStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                      );
-                    }).toList(),
-                pieTouchData: PieTouchData(
-                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                    //Handle touch events here if needed
-                  },
-                  enabled: true,
-                ),
-              ),
-            ),
-          ),
+                              return PieChartSectionData(
+                                showTitle: true,
+                                color: THelperFunctions.getOrderStatusColor(status),
+                                value: count.toDouble(),
+                                title: '$count',
+                                radius: TDeviceUtils.isTabletScreen(context) ? 80 : 100,
+                                titleStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              );
+                            }).toList(),
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            //Handle touch events here if needed
+                          },
+                          enabled: true,
+                        ),
+                      ),
+                    ),
+                  )
+                  : const SizedBox(
+                    height: 400,
+                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [TLoaderAnimation()]),
+                  ),
+        ),
 
-          //Show Status & Color Meta
-          SizedBox(
-            width: double.infinity,
-            child: DataTable(
+        //Show Status & Color Meta
+        SizedBox(
+          width: double.infinity,
+          child: Obx(
+            () => DataTable(
               columns: const [
                 DataColumn(label: Text('Status')),
                 DataColumn(label: Text('Orders')),
@@ -60,7 +76,8 @@ class OrderStatusPiChart extends StatelessWidget {
                   controller.orderStatusData.entries.map((entry) {
                     final OrderStatus status = entry.key;
                     final int count = entry.value;
-                    final totalAmount = controller.totalAmounts[status] ?? 0;
+                    final double totalAmount = controller.totalAmounts[status]!;
+                    final String displayStatus = controller.getDisplayStatusName(status);
 
                     return DataRow(
                       cells: [
@@ -73,7 +90,7 @@ class OrderStatusPiChart extends StatelessWidget {
                                 backgroundColor: THelperFunctions.getOrderStatusColor(status),
                               ),
                               const SizedBox(width: TSizes.sm),
-                              Expanded(child: Text(controller.getDisplayStatusName(status))),
+                              Expanded(child: Text(' $displayStatus')),
                             ],
                           ),
                         ),
@@ -84,8 +101,8 @@ class OrderStatusPiChart extends StatelessWidget {
                   }).toList(),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

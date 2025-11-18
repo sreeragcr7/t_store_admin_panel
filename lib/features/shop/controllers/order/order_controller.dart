@@ -15,7 +15,14 @@ class OrderController extends TBaseController<OrderModel> {
   @override
   Future<List<OrderModel>> fetchItems() async {
     sortAscending.value = false;
-    return await _orderRepository.getAllOrders();
+    try {
+      final orders = await _orderRepository.getAllOrders();
+      print('✅ Loaded ${orders.length} orders'); // Debug print
+      return orders;
+    } catch (e) {
+      print('❌ Error loading orders: $e'); // Debug print
+      return [];
+    }
   }
 
   @override
@@ -29,11 +36,11 @@ class OrderController extends TBaseController<OrderModel> {
   }
 
   void sortById(int sortColumnIndex, bool ascending) {
-    sortByProperty(sortColumnIndex, ascending, (OrderModel o) => o.totalAmount.toString().toLowerCase());
+    sortByProperty(sortColumnIndex, ascending, (OrderModel o) => o.id.toString().toLowerCase());
   }
 
   void sortByDate(int sortColumnIndex, bool ascending) {
-    sortByProperty(sortColumnIndex, ascending, (OrderModel o) => o.totalAmount.toString().toLowerCase());
+    sortByProperty(sortColumnIndex, ascending, (OrderModel o) => o.orderDate);
   }
 
   //Update product status

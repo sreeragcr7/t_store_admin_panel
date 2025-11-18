@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:t_store_admin_panel/data/repositories/product/product_repository.dart';
 import 'package:t_store_admin_panel/features/shop/controllers/category/category_controller.dart';
 import 'package:t_store_admin_panel/features/shop/controllers/product/product_attribute_controller.dart';
@@ -121,7 +122,7 @@ class EditProductController extends GetxController {
 
       //Check internet connectivity
       final isConnected = await NetworkManager.instance.isConnected();
-      if (isConnected) {
+      if (!isConnected) {
         TFullScreenLoader.stopLoading();
         return;
       }
@@ -186,7 +187,7 @@ class EditProductController extends GetxController {
       product.description = description.text.trim();
       product.productType = productType.value.toString();
       product.stock = int.tryParse(stock.text.trim()) ?? 0;
-      product.price = double.tryParse(stock.text.trim()) ?? 0;
+      product.price = double.tryParse(price.text.trim()) ?? 0;
       product.images = imagesController.additionalProductImagesUrls;
       product.salePrice = double.tryParse(salePrice.text.trim()) ?? 0;
       product.thumbnail = imagesController.selectedThumbnailImageUrl.value ?? '';
@@ -254,7 +255,7 @@ class EditProductController extends GetxController {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(TImages.successtick2, height: 200, width: 200),
+            Lottie.asset(TImages.successtick2, height: 200, width: 200),
             const SizedBox(height: TSizes.spaceBtwItems),
             Text('Congratulations', style: Theme.of(Get.context!).textTheme.headlineSmall),
             const SizedBox(height: TSizes.spaceBtwItems),
@@ -278,7 +279,7 @@ class EditProductController extends GetxController {
                 () => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(TImages.emailLoading, height: 200, width: 200),
+                    Lottie.asset(TImages.emailLoading, height: 200, width: 200),
                     const SizedBox(height: TSizes.spaceBtwItems),
                     buildCheckbox('Thumbnail Image', thumbnailUploader),
                     buildCheckbox('Additional Images', additionalImagesUploader),

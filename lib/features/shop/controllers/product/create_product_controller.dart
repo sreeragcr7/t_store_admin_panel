@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:t_store_admin_panel/data/repositories/brands/brand_repository.dart';
 import 'package:t_store_admin_panel/data/repositories/product/product_repository.dart';
 import 'package:t_store_admin_panel/features/shop/controllers/product/product_attribute_controller.dart';
 import 'package:t_store_admin_panel/features/shop/controllers/product/product_controller.dart';
@@ -123,7 +125,7 @@ class CreateProductController extends GetxController {
         description: description.text.trim(),
         productType: productType.value.toString(),
         stock: int.tryParse(stock.text.trim()) ?? 0,
-        price: double.tryParse(stock.text.trim()) ?? 0,
+        price: double.tryParse(price.text.trim()) ?? 0,
         images: imagesController.additionalProductImagesUrls,
         salePrice: double.tryParse(salePrice.text.trim()) ?? 0,
         thumbnail: imagesController.selectedThumbnailImageUrl.value ?? '',
@@ -134,6 +136,11 @@ class CreateProductController extends GetxController {
       //Call Repository to Create new Product
       productDataUploader.value = true;
       newRecord.id = await ProductRepository.instance.createProduct(newRecord);
+
+      // Update brand's products count
+      if (selectedBrand.value != null) {
+        await BrandRepository.instance.incrementBrandProductsCount(selectedBrand.value!.id);
+      }
 
       //Register product categories if any
       if (selectedCategories.isNotEmpty) {
@@ -203,7 +210,7 @@ class CreateProductController extends GetxController {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(TImages.emptyBox, height: 200, width: 200),
+            Lottie.asset(TImages.successtick, height: 200, width: 200),
             const SizedBox(height: TSizes.spaceBtwItems),
             Text('Congratulations', style: Theme.of(Get.context!).textTheme.headlineSmall),
             const SizedBox(height: TSizes.spaceBtwItems),
@@ -227,7 +234,7 @@ class CreateProductController extends GetxController {
                 () => Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(TImages.boxOpen, height: 200, width: 200),
+                    Lottie.asset(TImages.tailLoading, height: 200, width: 200),
                     const SizedBox(height: TSizes.spaceBtwItems),
                     buildCheckbox('Thumbnail Image', thumbnailUploader),
                     buildCheckbox('Additional Images', additionalImagesUploader),

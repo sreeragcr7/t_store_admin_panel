@@ -1,8 +1,8 @@
-
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_utils/src/extensions/num_extensions.dart';
 import 'package:t_store_admin_panel/data/abstract/base_data_table_controller.dart';
+import 'package:t_store_admin_panel/data/repositories/brands/brand_repository.dart';
 import 'package:t_store_admin_panel/data/repositories/product/product_repository.dart';
 import 'package:t_store_admin_panel/features/shop/models/product_model.dart';
 import 'package:t_store_admin_panel/utils/constants/enums.dart';
@@ -27,8 +27,15 @@ class ProductController extends TBaseController<ProductModel> {
 
   @override
   Future<void> deleteItem(ProductModel item) async {
+    // Store the brand reference before deletion
+    final brand = item.brand;
     // you might want to check if any order of this product exist, delet the first
     await _productRepository.deleteProduct(item);
+
+    // Update brand's products count - ADD THIS
+    if (brand != null) {
+      await BrandRepository.instance.decrementBrandProductsCount(brand.id);
+    }
   }
 
   //Sorting related code

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:t_store_admin_panel/common/widgets/custom_shapes/containers/t_rounded_container.dart';
+import 'package:t_store_admin_panel/features/shop/controllers/dashboard/dashboard_controller.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/tables/dashboard_table.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/widgets/dashboard_card.dart';
 import 'package:t_store_admin_panel/features/shop/screens/dashboard/widgets/order_status_pi_graph.dart';
@@ -12,6 +15,8 @@ class DashboardTabletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DashboardController());
+
     return Scaffold(
       backgroundColor: TColors.softGrey,
       body: SingleChildScrollView(
@@ -27,18 +32,70 @@ class DashboardTabletScreen extends StatelessWidget {
               //Cards
               Row(
                 children: [
-                  Expanded(child: TDashboardCard(stats: 25, title: 'Sales total', subTitle: '\$365.6')),
+                  Expanded(
+                    child: Obx(
+                      () => TDashboardCard(
+                        headingIcon: Iconsax.note,
+                        headingIconColor: Colors.blue,
+                        headingIconBgColor: Colors.blue.withAlpha(26),
+                        context: context,
+                        stats: 25,
+                        title: 'Sales total',
+                        subTitle:
+                            '\$${controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount).toStringAsFixed(2)}',
+                      ),
+                    ),
+                  ),
                   SizedBox(width: TSizes.spaceBtwItems),
-                  Expanded(child: TDashboardCard(stats: 15, title: 'Average Order Value', subTitle: '\$25')),
+                  Expanded(
+                    child: Obx(
+                      () => TDashboardCard(
+                        headingIcon: Iconsax.external_drive,
+                        headingIconColor: Colors.green,
+                        headingIconBgColor: Colors.green.withAlpha(26),
+                        context: context,
+                        stats: 15,
+                        title: 'Average Order Value',
+                        subTitle:
+                            '\$${(controller.orderController.allItems.fold(0.0, (previousValue, element) => previousValue + element.totalAmount) / controller.orderController.allItems.length).toStringAsFixed(2)}',
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: TSizes.spaceBtwItems),
               //Cards
               Row(
                 children: [
-                  Expanded(child: TDashboardCard(stats: 44, title: 'Total Orders', subTitle: '36')),
+                  Expanded(
+                    child: Obx(
+                      () => TDashboardCard(
+                        headingIcon: Iconsax.box,
+                        headingIconColor: Colors.deepPurple,
+                        headingIconBgColor: Colors.deepPurple.withAlpha(26),
+                        context: context,
+                        icon: Iconsax.box,
+                        color: Colors.deepPurple,
+                        stats: 44,
+                        title: 'Total Orders',
+                        subTitle: '\$${controller.orderController.allItems.length}',
+                      ),
+                    ),
+                  ),
                   SizedBox(width: TSizes.spaceBtwItems),
-                  Expanded(child: TDashboardCard(stats: 2, title: 'Visitors', subTitle: '25,035')),
+                  Expanded(
+                    child: Obx(
+                      () => TDashboardCard(
+                        headingIcon: Iconsax.user,
+                        headingIconColor: Colors.deepOrange,
+                        headingIconBgColor: Colors.deepOrange.withAlpha(26),
+                        context: context,
+                        stats: 2,
+                        title: 'Visitors',
+                        subTitle: controller.customerController.allItems.length.toString(),
+                      ),
+                    ),
+                  ),
                 ],
               ),
 
