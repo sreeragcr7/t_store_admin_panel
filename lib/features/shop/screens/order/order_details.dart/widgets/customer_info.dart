@@ -32,17 +32,19 @@ class OrderCustomer extends StatelessWidget {
               Text('Customer', style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: TSizes.spaceBtwSections),
               Obx(() {
+                if (controller.loading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final customer = controller.customer.value;
+
                 return Row(
                   children: [
                     TRoundedImage(
                       padding: 0,
                       backgroundColor: TColors.primaryBackground,
-                      image:
-                          controller.customer.value.profilePicture.isNotEmpty
-                              ? controller.customer.value.profilePicture
-                              : TImages.user,
-                      imageType:
-                          controller.customer.value.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
+                      image: customer.profilePicture.isNotEmpty ? customer.profilePicture : TImages.user,
+                      imageType: customer.profilePicture.isNotEmpty ? ImageType.network : ImageType.asset,
                     ),
                     const SizedBox(height: TSizes.spaceBtwItems),
                     Expanded(
@@ -51,12 +53,12 @@ class OrderCustomer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            controller.customer.value.fullName,
+                            customer.fullName,
                             style: Theme.of(context).textTheme.titleLarge,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
-                          Text(controller.customer.value.email, overflow: TextOverflow.ellipsis, maxLines: 1),
+                          Text(customer.email, overflow: TextOverflow.ellipsis, maxLines: 1),
                         ],
                       ),
                     ),
@@ -69,8 +71,16 @@ class OrderCustomer extends StatelessWidget {
         const SizedBox(height: TSizes.spaceBtwSections),
 
         //Contact Info
-        Obx(
-          () => SizedBox(
+        Obx(() {
+          if (controller.loading.value) {
+            return TRoundedContainer(
+              padding: const EdgeInsets.all(TSizes.defaultSpace),
+              child: const Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          final customer = controller.customer.value;
+          return SizedBox(
             width: double.infinity,
             child: TRoundedContainer(
               padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -79,21 +89,19 @@ class OrderCustomer extends StatelessWidget {
                 children: [
                   Text('Contact Person', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: TSizes.spaceBtwSections),
-                  Text(controller.customer.value.fullName, style: Theme.of(context).textTheme.titleMedium),
+                  Text(customer.fullName, style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: TSizes.spaceBtwItems / 2),
-                  Text(controller.customer.value.email, style: Theme.of(context).textTheme.titleMedium),
+                  Text(customer.email, style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: TSizes.spaceBtwItems / 2),
                   Text(
-                    controller.customer.value.formattedPhoneNo.isNotEmpty
-                        ? controller.customer.value.formattedPhoneNo
-                        : '(+1) *** ****',
+                    customer.formattedPhoneNo.isNotEmpty ? customer.formattedPhoneNo : '(+1) *** ****',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],
               ),
             ),
-          ),
-        ),
+          );
+        }),
         const SizedBox(height: TSizes.spaceBtwSections),
 
         //Contact Info
@@ -106,21 +114,23 @@ class OrderCustomer extends StatelessWidget {
               children: [
                 Text('Shipping Address', style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: TSizes.spaceBtwSections),
-                Text(
-                  order.shippingAddress != null ? order.shippingAddress!.name : '',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems / 2),
-                Text(
-                  order.shippingAddress != null ? order.shippingAddress!.toString() : '',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                if (order.shippingAddress != null && order.shippingAddress!.name.isNotEmpty) ...[
+                  Text(order.shippingAddress!.name, style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: TSizes.spaceBtwItems / 2),
+                  Text(order.shippingAddress!.toString(), style: Theme.of(context).textTheme.titleMedium),
+                ] else ...[
+                  Text(
+                    'No shipping address',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: TColors.darkerGrey),
+                  ),
+                ],
               ],
             ),
           ),
         ),
         const SizedBox(height: TSizes.spaceBtwSections),
-        //Contact Info
+
+        // Billing Address
         SizedBox(
           width: double.infinity,
           child: TRoundedContainer(
@@ -130,17 +140,23 @@ class OrderCustomer extends StatelessWidget {
               children: [
                 Text('Billing Address', style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: TSizes.spaceBtwSections),
-                Text(
-                  order.billingAddressSameAsShipping ? order.shippingAddress!.name : order.billingAddress!.name,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems / 2),
-                Text(
-                  order.billingAddressSameAsShipping
-                      ? order.shippingAddress!.toString()
-                      : order.billingAddress!.toString(),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                if (order.billingAddress != null && order.billingAddress!.name.isNotEmpty) ...[
+                  Text(order.billingAddress!.name, style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: TSizes.spaceBtwItems / 2),
+                  Text(order.billingAddress!.toString(), style: Theme.of(context).textTheme.titleMedium),
+                ] else if (order.shippingAddress != null && order.shippingAddress!.name.isNotEmpty) ...[
+                  Text(
+                    'Same as shipping address',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: TColors.darkerGrey),
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwItems / 2),
+                  Text(order.shippingAddress!.toString(), style: Theme.of(context).textTheme.titleMedium),
+                ] else ...[
+                  Text(
+                    'No billing address',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: TColors.darkerGrey),
+                  ),
+                ],
               ],
             ),
           ),

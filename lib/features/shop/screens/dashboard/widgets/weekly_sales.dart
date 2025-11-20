@@ -114,7 +114,7 @@ class TWeeklySalesGraph extends StatelessWidget {
           },
         ),
       ),
-      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, interval: stepHeight, reservedSize: 50)),
+      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, interval: stepHeight <= 0 ? 500 : stepHeight, reservedSize: 50)),
       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
       topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
     );

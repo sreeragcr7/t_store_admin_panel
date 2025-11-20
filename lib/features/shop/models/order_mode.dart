@@ -77,24 +77,123 @@ class OrderModel {
     };
   }
 
-  factory OrderModel.fromSnapshot(DocumentSnapshot snapshot) {
-    final data = snapshot.data() as Map<String, dynamic>;
+factory OrderModel.fromSnapshot(DocumentSnapshot snapshot) {
+  final data = snapshot.data() as Map<String, dynamic>;
+  
+  print('🔄 Parsing order data: ${snapshot.id}');
+  print('📊 Raw data keys: ${data.keys.toList()}');
 
-    return OrderModel(
-      docId: snapshot.id,
-      id: data.containsKey('id') ? data['id'] as String: '',
-      userId: data.containsKey('userId') ? data['userId'] as String: '',
-      status: data.containsKey('status') ? OrderStatus.values.firstWhere((e) => e.toString() == data['status']) : OrderStatus.pending,
-      totalAmount: data.containsKey('totalAmount') ? data['totalAmount'] as double : 0.0,
-      shippingCost: data.containsKey('shippingCost') ? (data['shippingCost'] as num).toDouble() : 0.0,
-      taxCost:  data.containsKey('taxCost') ? (data['taxCost'] as num).toDouble() : 0.0,
-      orderDate:  data.containsKey('orderDate') ? (data['orderDate'] as Timestamp).toDate() : DateTime.now(),
-      paymentMethod: data.containsKey('paymentMethod') ? data['paymentMethod'] as String: '',
-      billingAddressSameAsShipping: data.containsKey('billingAddressSameAsShipping') ? data['billingAddressSameAsShipping'] as bool: true,
-      billingAddress: data.containsKey('billingAddress') ? AddressModel.fromMap(data['billingAddress'] as Map<String, dynamic>) : AddressModel.empty(),
-      shippingAddress: data.containsKey('shippingAddress') ? AddressModel.fromMap(data['shippingAddress'] as Map<String, dynamic>) : AddressModel.empty(),
-      deliveryDate: data.containsKey('deliveryDate') && data['deliveryDate'] != null ? (data['deliveryDate'] as Timestamp).toDate() : null,
-      items: data.containsKey('items') ? (data['items'] as List<dynamic>).map((itemData) => CartItemModel.fromJson(itemData as Map<String, dynamic>)).toList() : [],
+  // Parse items
+  List<CartItemModel> items = [];
+  if (data.containsKey('Items') && data['Items'] is List) { // Note: Capital 'I'
+    try {
+      items = (data['Items'] as List<dynamic>).map((itemData) {
+        return CartItemModel.fromJson(itemData as Map<String, dynamic>);
+      }).toList();
+      print('✅ Parsed ${items.length} items');
+    } catch (e) {
+      print('❌ Error parsing items: $e');
+    }
+  } else {
+    print('⚠️ No Items field found or not a list');
+  }
+
+  // Parse numeric fields - match your Firestore field names
+  double totalAmount = 0.0;
+  if (data.containsKey('TotalAmount')) { // Note: Capital 'T', capital 'A'
+    final totalAmountData = data['TotalAmount'];
+    if (totalAmountData is int) {
+      totalAmount = totalAmountData.toDouble();
+    } else if (totalAmountData is double) {
+      totalAmount = totalAmountData;
+    } else if (totalAmountData is String) {
+      totalAmount = double.tryParse(totalAmountData) ?? 0.0;
+    }
+    print('💰 Total Amount: $totalAmount (raw: $totalAmountData)');
+  } else {
+    print('⚠️ No TotalAmount field found');
+  }
+
+  // Parse other fields with correct capitalization
+  DateTime orderDate = DateTime.now();
+  if (data.containsKey('OrderDate')) { // Note: Capital 'O', capital 'D'
+    orderDate = (data['OrderDate'] as Timestamp).toDate();
+    print('📅 Order Date: $orderDate');
+  } else if (data.containsKey('DateTime')) {
+    orderDate = (data['DateTime'] as Timestamp).toDate();
+    print('📅 Using DateTime as Order Date: $orderDate');
+  }
+
+  // Parse status - handle the string format "OrderStatus.pending"
+  OrderStatus status = OrderStatus.pending;
+  if (data.containsKey('Status')) {
+    final statusString = data['Status'] as String;
+    print('📋 Raw Status: $statusString');
+    
+    // Extract just the status name from "OrderStatus.pending"
+    if (statusString.contains('.')) {
+      final statusName = statusString.split('.').last;
+      status = OrderStatus.values.firstWhere(
+        (e) => e.name == statusName,
+        orElse: () => OrderStatus.pending,
+      );
+    } else {
+      status = OrderStatus.values.firstWhere(
+        (e) => e.name == statusString,
+        orElse: () => OrderStatus.pending,
+      );
+    }
+    print('✅ Parsed Status: ${status.name}');
+  }
+
+  String paymentMethod = 'Cash on Delivery';
+  if (data.containsKey('PaymentMethod')) { // Note: Capital 'P', capital 'M'
+    paymentMethod = data['PaymentMethod'] as String;
+  }
+
+  // Parse shipping address from top-level fields
+  AddressModel? shippingAddress;
+  if (data.containsKey('City') || data.containsKey('Street')) {
+    shippingAddress = AddressModel(
+      id: data.containsKey('Id') ? data['Id'] as String : '',
+      name: data.containsKey('Name') ? data['Name'] as String : '',
+      phoneNumber: data.containsKey('PhoneNumber') ? data['PhoneNumber'] as String : '',
+      street: data.containsKey('Street') ? data['Street'] as String : '',
+      city: data.containsKey('City') ? data['City'] as String : '',
+      state: data.containsKey('State') ? data['State'] as String : '',
+      postalCode: data.containsKey('PostalCode') ? data['PostalCode'] as String : '',
+      country: data.containsKey('Country') ? data['Country'] as String : '',
     );
+    print('📍 Parsed shipping address');
+  }
+
+  return OrderModel(
+    docId: snapshot.id,
+    id: data.containsKey('Id') ? data['Id'] as String : snapshot.id,
+    userId: data.containsKey('UserId') ? data['UserId'] as String : _getUserIdFromPath(snapshot.reference.path),
+    status: status,
+    totalAmount: totalAmount,
+    shippingCost: 0.0, // You might want to add this field to Firestore
+    taxCost: 0.0, // You might want to add this field to Firestore
+    orderDate: orderDate,
+    paymentMethod: paymentMethod,
+    billingAddressSameAsShipping: true, // Default to true
+    billingAddress: shippingAddress, // Use same as shipping for now
+    shippingAddress: shippingAddress,
+    deliveryDate: data.containsKey('DeliveryDate') && data['DeliveryDate'] != null
+        ? (data['DeliveryDate'] as Timestamp).toDate()
+        : null,
+    items: items,
+  );
+}
+
+  // Helper method to extract userId from Firestore path
+  static String _getUserIdFromPath(String path) {
+    final pathSegments = path.split('/');
+    // Path format: Users/{userId}/Orders/{orderId}
+    if (pathSegments.length >= 2 && pathSegments[0] == 'Users') {
+      return pathSegments[1];
+    }
+    return '';
   }
 }

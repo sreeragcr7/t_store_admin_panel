@@ -14,6 +14,10 @@ class OrderRows extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     final order = controller.filteredItems[index];
+
+    // Calculate total items count
+    int totalItems = order.items.fold(0, (sum, item) => sum + item.quantity);
+
     return DataRow2(
       onTap: () => Get.toNamed(TRoutes.orderDetails, arguments: order, parameters: {'orderId': order.id}),
       selected: controller.selectedRows[index],
@@ -21,7 +25,7 @@ class OrderRows extends DataTableSource {
       cells: [
         DataCell(Text(order.id, style: Theme.of(Get.context!).textTheme.bodyLarge!.apply(color: TColors.primary))),
         DataCell(Text(order.formattedOrderDate)),
-        DataCell(Text('${order.items.length} Items')), //!need to update
+        DataCell(Text('$totalItems Items')), //!need to update
         DataCell(
           TRoundedContainer(
             radius: TSizes.cardRadiusSm,
@@ -33,7 +37,7 @@ class OrderRows extends DataTableSource {
             ),
           ),
         ),
-        DataCell(Text('\$${order.totalAmount}')),
+        DataCell(Text('\$${order.totalAmount.toStringAsFixed(2)}')),
         DataCell(
           TTableActionButtons(
             view: true,

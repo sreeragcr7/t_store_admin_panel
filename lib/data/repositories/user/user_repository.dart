@@ -15,7 +15,7 @@ class UserRepository extends GetxController {
 
   final _db = FirebaseFirestore.instance;
 
-    //Function to save user data to Firestore.
+  //Function to save user data to Firestore.
   Future<void> createUser(UserModel user) async {
     try {
       await _db.collection('Users').doc(user.id).set(user.toJson());
@@ -130,6 +130,25 @@ class UserRepository extends GetxController {
       throw TPlatformException(e.code).message;
     } catch (e) {
       throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<UserModel> fetchUserById(String userId) async {
+    try {
+      print('🔄 Fetching user by ID: $userId');
+      final document = await _db.collection('Users').doc(userId).get();
+      
+      if (document.exists) {
+        final user = UserModel.fromSnapshot(document);
+        print('✅ User found: ${user.fullName}');
+        return user;
+      } else {
+        print('❌ User not found with ID: $userId');
+        return UserModel.empty();
+      }
+    } catch (e) {
+      print('❌ Error in fetchUserById: $e');
+      throw 'Failed to fetch user: $e';
     }
   }
 }

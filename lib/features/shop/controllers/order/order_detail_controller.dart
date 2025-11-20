@@ -12,16 +12,33 @@ class OrderDetailController extends GetxController {
   Rx<UserModel> customer = UserModel.empty().obs;
 
   //Load customer orders
-  Future<void> getCustomerOfCurrentOrder() async {
+   Future<void> getCustomerOfCurrentOrder() async {
     try {
-      //Show loader while loading categories
+      print('🔄 Fetching customer for order: ${order.value.id}');
+      print('👤 UserId: ${order.value.userId}');
+      
       loading.value = true;
-      //Fetch customer orders & addresses
-      final user = await UserRepository.instance.fetchUserDetails(order.value.userId);
+      
+      if (order.value.userId.isEmpty) {
+        print('❌ No userId found for order');
+        customer.value = UserModel.empty();
+        return;
+      }
 
-      customer.value = user;
+      // Fetch customer details
+      final user = await UserRepository.instance.fetchUserById(order.value.userId);
+      
+      if (user.id == null) {
+        print('❌ Customer not found for userId: ${order.value.userId}');
+        customer.value = UserModel.empty();
+      } else {
+        print('✅ Found customer: ${user.fullName} (${user.email})');
+        customer.value = user;
+      }
     } catch (e) {
+      print('❌ Error fetching customer: $e');
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      customer.value = UserModel.empty();
     } finally {
       loading.value = false;
     }

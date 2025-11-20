@@ -16,11 +16,19 @@ class OrderController extends TBaseController<OrderModel> {
   Future<List<OrderModel>> fetchItems() async {
     sortAscending.value = false;
     try {
+      print('🔄 OrderController: Fetching orders...');
       final orders = await _orderRepository.getAllOrders();
-      print('✅ Loaded ${orders.length} orders'); // Debug print
+      print('✅ OrderController: Loaded ${orders.length} orders');
+      
+      // Debug: Print order IDs
+      for (var order in orders) {
+        print('📦 Order: ${order.id}, User: ${order.userId}, Status: ${order.status}');
+      }
+      
       return orders;
     } catch (e) {
-      print('❌ Error loading orders: $e'); // Debug print
+      print('❌ OrderController: Error loading orders: $e');
+      TLoaders.errorSnackBar(title: 'Error', message: 'Failed to load orders: $e');
       return [];
     }
   }
